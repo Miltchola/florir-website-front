@@ -47,3 +47,25 @@ body {
   font-weight: 700;
   font-style: normal;
 }
+
+h1 {
+  color: var(--font-primary);
+  font-weight: 300; /* font-light */
+  font-size: 2.25rem; /* text-4xl */
+  font-family: "David Libre", serif;
+  line-height: 1.2;
+}
+
+h2 {
+  color: var(--font-primary);
+  font-weight: 300;
+  font-size: 2rem;
+  font-family: "David Libre", serif;
+}
+
+p {
+  color: var(--font-primary);         /* text-font-primary */
+  font-weight: 200;                   /* font-thin */
+  font-size: 1.125rem;                /* text-lg */
+  font-family: "David Libre", serif;
+}
