@@ -3,6 +3,7 @@ import { Button } from "@/app/sharedComponents/ui/Button";
 import { Line } from "@/app/sharedComponents/ui/Line";
 import { SectionDivision } from "@/app/sharedComponents/ui/SectionDivision";
 import { SectionTitle } from "@/app/sharedComponents/ui/SectionTitle";
+import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
 
 import { HeroSection } from "./components/HeroSection";
 
@@ -32,6 +33,19 @@ export default function Home() {
             <div className="w-full flex justify-start px-16">
                 <SectionDivision text="Section Title"/>
             </div>
+
+            <AboutSection
+                image1="/images/Flor sem fundo.png"
+                title="Tatiana Kiefer de Albuquerque Mello"
+                text={`Fundadora da Florir, apaixonada por flores e design floral.
+                    Com anos de experiência no mercado, Tatiana combina criatividade
+                    e técnica para criar arranjos únicos que encantam seus clientes.
+
+                    Sua visão é transformar espaços através da beleza das flores,
+                    trazendo alegria e elegância para cada ocasião.`}
+                buttonText="Saiba Mais"
+                buttonStatus={true}
+            />
         </div>
     );
 }
