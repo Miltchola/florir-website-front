@@ -63,6 +63,13 @@ h2 {
   font-family: "David Libre", serif;
 }
 
+h3 {
+  color: var(--font-primary);
+  font-weight: 300;
+  font-size: 1.5rem;
+  font-family: "David Libre", serif;
+}
+
 p {
   color: var(--font-primary);         /* text-font-primary */
   font-weight: 200;                   /* font-thin */
