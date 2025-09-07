@@ -4,6 +4,8 @@ import { Line } from "@/app/sharedComponents/ui/Line";
 import { SectionDivision } from "@/app/sharedComponents/ui/SectionDivision";
 import { SectionTitle } from "@/app/sharedComponents/ui/SectionTitle";
 import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
+import { ProdutoCard } from "@/app/sharedComponents/produto/ProdutoCard";
+import { Question } from "@/app/sharedComponents/ui/Question";
 
 import { HeroSection } from "./components/HeroSection";
 
@@ -35,7 +37,8 @@ export default function Home() {
             </div>
 
             <AboutSection
-                image1="/images/Flor sem fundo.png"
+                image1="/images/Tati Bolo.jpeg"
+                image2="/images/Tati Flores.jpeg"
                 title="Tatiana Kiefer de Albuquerque Mello"
                 text={`Fundadora da Florir, apaixonada por flores e design floral.
                     Com anos de experiência no mercado, Tatiana combina criatividade
@@ -46,6 +49,31 @@ export default function Home() {
                 buttonText="Saiba Mais"
                 buttonStatus={true}
             />
+
+            {/* Teste ProdutoCard */}
+            <ProdutoCard
+                imagem="/images/Anel Florido.jpeg"
+                nome="Arranjo Floral Exclusivo"
+                descricao="Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial."
+                preco="R$ 150,00"
+                recomendado={true}
+                tipo="Decoração"
+                buttonText="Ver mais"
+                buttonLink={() => alert('Produto Adicionado ao Carrinho!')}
+            />
+
+            <Question
+                pergunta="Como que é o procedimento de desidratar uma planta?"
+                resposta="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                arrowIcon="/icons/right 64.png"
+            />
+
+            <Question
+                pergunta="Como que é o procedimento de desidratar uma planta?"
+                resposta="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                arrowIcon="/icons/right 64.png"
+            />
+
         </div>
     );
 }

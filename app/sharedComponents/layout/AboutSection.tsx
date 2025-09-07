@@ -28,21 +28,27 @@ export function AboutSection ({
       className="flex flex-col lg:flex-row items-center justify-center w-full px-8 py-12 gap-8 my-4"
       style={{ backgroundColor: "#DDB7AB" }}
     >
-      <div className="flex flex-row gap-4 flex-1 justify-center items-center">
+      <div className="flex flex-row gap-8 flex-1 justify-center items-center">
         <Image
           src={image1}
           alt="About Image 1"
-          width={220}
-          height={220}
-          className="rounded-[40px] object-cover"
+          width={0}
+          height={0}
+          sizes="(max-width: 640px) 140px, (max-width: 1024px) 180px, 250px"
+          className="rounded-[40px] object-cover
+          w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] lg:w-[250px] lg:h-[280px]
+          transition duration-500 ease-in-out hover:scale-105"
         />
         {image2 && (
           <Image
             src={image2}
             alt="About Image 2"
-            width={220}
-            height={220}
-            className="rounded-[40px] object-cover"
+            width={0}
+            height={0}
+            sizes="(max-width: 640px) 140px, (max-width: 1024px) 180px, 250px"
+            className="rounded-[40px] object-cover
+            w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] lg:w-[250px] lg:h-[280px]
+            transition duration-500 ease-in-out hover:scale-105"
           />
         )}
       </div>
