@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import { Button } from '@/app/sharedComponents/ui/Button';
+import { motion } from 'framer-motion';
 
 interface AboutSectionProps {
   image1: string;
@@ -24,7 +25,11 @@ export function AboutSection ({
   children,
 }: AboutSectionProps) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 80 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+      viewport={{ once: true }}
       className="flex flex-col lg:flex-row items-center justify-center w-full px-8 py-12 gap-8 my-4"
       style={{ backgroundColor: "#DDB7AB" }}
     >
@@ -78,6 +83,6 @@ export function AboutSection ({
         )}
         {children}
       </div>
-    </div>
+    </motion.div>
   )
 }
