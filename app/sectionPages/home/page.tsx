@@ -5,9 +5,11 @@ import { SectionDivision } from "@/app/sharedComponents/ui/SectionDivision";
 import { SectionTitle } from "@/app/sharedComponents/ui/SectionTitle";
 import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
 import { ProdutoCard } from "@/app/sharedComponents/produto/ProdutoCard";
-import { Question } from "@/app/sharedComponents/ui/Question";
+import { Question } from "@/app/sharedComponents/question/Question";
 
 import { HeroSection } from "./components/HeroSection";
+import { Carousel } from "./components/Carousel";
+import { QuestionHandler } from "@/app/sharedComponents/question/QuestionHandler";
 
 export default function Home() {
     return (
@@ -20,6 +22,12 @@ export default function Home() {
                 buttonText="Ver Mais"
             />
             
+            <Carousel
+                images={[
+                    { src: '/images/Bolo Florido.jpeg', alt: 'Slide 1' },
+                    { src: '/images/Anel Florido.jpeg', alt: 'Slide 2' },
+                ]}
+            />
             
             <SectionTitle
                     image="/icons/Mini Logo Florir.png"
@@ -62,16 +70,34 @@ export default function Home() {
                 buttonLink={() => alert('Produto Adicionado ao Carrinho!')}
             />
 
-            <Question
-                pergunta="Como que é o procedimento de desidratar uma planta?"
-                resposta="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                arrowIcon="/icons/right 64.png"
-            />
+            <QuestionHandler
+            perguntas={[
+                {
+                pergunta: "Como funciona o delivery?",
+                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat.`,
+                },
+                {
+                pergunta: "Como cuidar das flores?",
+                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat.`,
+                },
+                {
+                pergunta: "Como que é o procediomento de desidratar uma planta?",
+                resposta: `Fundadora da Florir, apaixonada por flores e design floral.
+                    Com anos de experiência no mercado, Tatiana combina criatividade
+                    e técnica para criar arranjos únicos que encantam seus clientes.
 
-            <Question
-                pergunta="Como que é o procedimento de desidratar uma planta?"
-                resposta="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                arrowIcon="/icons/right 64.png"
+                    Sua visão é transformar espaços através da beleza das flores,
+                    trazendo alegria e elegância para cada ocasião.`
+                },
+            ]}
+            quantidade={3} // ou null para mostrar todas
+            mostrarBotaoVerTodas={true}
             />
 
         </div>

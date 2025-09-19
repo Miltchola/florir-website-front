@@ -40,7 +40,8 @@ export function HeroSection({ children, logo, title, text, image, buttonText }: 
         <div className="right flex-1 flex justify-center items-center">
             <Image 
                 className="rounded-lg shadow-lg mt-6
-                    w-2rem max-w-4rem sm:max-w-4rem md:max-w-2rem lg:max-w-2rem h-auto"
+                    w-2rem max-w-4rem sm:max-w-4rem md:max-w-2rem lg:max-w-2rem h-auto
+                    hover:scale-105 hover:rotate-1 transition-all duration-500 ease-in-out"
                 src={image}
                 alt="Hero Image"
                 width={350}
