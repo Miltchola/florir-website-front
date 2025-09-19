@@ -14,7 +14,7 @@ interface CarouselProps {
 
 export function Carousel({ images }: CarouselProps) {
 	return (
-		<div className="w-full rounded-[32px]
+		<div className="w-[98%] rounded-[32px]
 				overflow-hidden bg-background-primary
 				md:px-24 px-12
 				hover:scale-102 transition-all duration-500 ease-in-out lg:opacity-75 hover:opacity-100"
