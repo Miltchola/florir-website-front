@@ -29,10 +29,10 @@ export function Header({
       {/* Logo centralizada em mobile, alinhada à esquerda em desktop */}
       <div className="flex-1 flex justify-center lg:justify-start items-center">
         <Image
-          src="/icons/Mini Logo Florir.png"
+          src="/icons/Logo Florir.png"
           alt="Logo Florir"
-          width={140}
-          height={83}
+          width={245}
+          height={145}
           className="object-contain"
           priority
         />
