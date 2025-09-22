@@ -6,12 +6,20 @@ import { SectionTitle } from "@/app/sharedComponents/ui/SectionTitle";
 import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
 import { ProdutoCard } from "@/app/sharedComponents/produto/ProdutoCard";
 import { Question } from "@/app/sharedComponents/ui/Question";
-
 import { HeroSection } from "./components/HeroSection";
+import { Header } from "@/app/sharedComponents/layout/Header";
 
 export default function Home() {
+    const navLinks = [
+        { label: 'SOBRE MIM', href: '/sobre' },
+        { label: 'PRODUTOS', href: '/produtos' },
+        { label: 'ARRANJOS DESIDRATADOS', href: '/arranjos' },
+        { label: 'CONTATO', href: '/contato' },
+    ];
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background-primary">
+            <Header navLinks={navLinks} />
             <HeroSection
                 logo="/icons/Mini Logo Florir.png"
                 title="Flores lindas para qualquer ocasião"
@@ -19,23 +27,20 @@ export default function Home() {
                 image="/images/Flor sem fundo.png"
                 buttonText="Ver Mais"
             />
-            
-            
             <SectionTitle
-                    image="/icons/Mini Logo Florir.png"
-                    title="Catálogo Florir"
-                    text="Todos os arranjos são criados com flores
+                image="/icons/Mini Logo Florir.png"
+                title="Catálogo Florir"
+                text="Todos os arranjos são criados com flores
                         naturais desidratadas manualmente,
                         respeitando a sazonalidade e exclusividade.
                         Cada peça é única e feita com muito carinho
                         especialmente para você."
-                />
+            />
             <Button text="Ver Mais" onClick={() => alert('Button Clicked!')} />
             <Line/>
             <div className="w-full flex justify-start px-16">
                 <SectionDivision text="Section Title"/>
             </div>
-
             <AboutSection
                 image1="/images/Tati Bolo.jpeg"
                 image2="/images/Tati Flores.jpeg"
@@ -49,7 +54,6 @@ export default function Home() {
                 buttonText="Saiba Mais"
                 buttonStatus={true}
             />
-
             {/* Teste ProdutoCard */}
             <ProdutoCard
                 imagem="/images/Anel Florido.jpeg"
@@ -61,19 +65,14 @@ export default function Home() {
                 buttonText="Ver mais"
                 buttonLink={() => alert('Produto Adicionado ao Carrinho!')}
             />
-
             <Question
                 pergunta="Como que é o procedimento de desidratar uma planta?"
                 resposta="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 arrowIcon="/icons/right 64.png"
             />
-
             <Question
                 pergunta="Como que é o procedimento de desidratar uma planta?"
                 resposta="Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                 arrowIcon="/icons/right 64.png"
             />
-
-        </div>
-    );
-}
+        </div>)}
