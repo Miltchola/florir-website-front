@@ -8,7 +8,6 @@ import { ProdutoCard } from "@/app/sharedComponents/produto/ProdutoCard";
 
 import { Question } from "@/app/sharedComponents/ui/Question";
 import { HeroSection } from "./components/HeroSection";
-//import { Header } from "@/app/sharedComponents/layout/Header";
 import { ProdutoGrid } from "@/app/sharedComponents/produto/ProdutoGrid";
 
 import { HeroSection } from "./components/HeroSection";
@@ -17,16 +16,9 @@ import { QuestionHandler } from "@/app/sharedComponents/question/QuestionHandler
 
 
 export default function Home() {
-    /*const navLinks = [
-        { label: 'SOBRE MIM', href: '/sobre' },
-        { label: 'PRODUTOS', href: '/produtos' },
-        { label: 'ARRANJOS DESIDRATADOS', href: '/arranjos' },
-        { label: 'CONTATO', href: '/contato' },
-    ];*/
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background-primary">
-            {/*<Header navLinks={navLinks} />*/}
             <HeroSection
                 logo="/icons/Mini Logo Florir.png"
                 title="Flores lindas para qualquer ocasião"
