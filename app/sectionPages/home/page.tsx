@@ -7,7 +7,6 @@ import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
 import { ProdutoCard } from "@/app/sharedComponents/produto/ProdutoCard";
 
 import { Question } from "@/app/sharedComponents/ui/Question";
-import { HeroSection } from "./components/HeroSection";
 import { ProdutoGrid } from "@/app/sharedComponents/produto/ProdutoGrid";
 
 import { HeroSection } from "./components/HeroSection";
