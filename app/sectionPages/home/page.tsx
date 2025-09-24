@@ -1,19 +1,34 @@
 "use client";
-import { Button } from "@/app/sharedComponents/ui/Button";
 import { Line } from "@/app/sharedComponents/ui/Line";
 import { SectionDivision } from "@/app/sharedComponents/ui/SectionDivision";
-import { SectionTitle } from "@/app/sharedComponents/ui/SectionTitle";
 import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
-import { ProdutoCard } from "@/app/sharedComponents/produto/ProdutoCard";
 import { ProdutoGrid } from "@/app/sharedComponents/produto/ProdutoGrid";
+import { Button } from "@/app/sharedComponents/ui/Button";
+import { Header } from "@/app/sharedComponents/layout/Header";
 
 import { HeroSection } from "./components/HeroSection";
 import { Carousel } from "./components/Carousel";
 import { QuestionHandler } from "@/app/sharedComponents/question/QuestionHandler";
 
 export default function Home() {
+    const navLinks = [
+        { label: 'SOBRE MIM', href: '/sobre' },
+        { label: 'PRODUTOS', href: '/produtos' },
+        { label: 'ARRANJOS DESIDRATADOS', href: '/arranjos' },
+        { label: 'CONTATO', href: '/contato' },
+    ];
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background-primary">
+            
+
+            <Header navLinks={navLinks} />
+            
+            <Button
+                text="Login"
+                buttonColor="dark"
+                onClick={() => window.location.href = '/login'}
+            />
+            
             <HeroSection
                 logo="/icons/Mini Logo Florir.png"
                 title="Flores lindas para qualquer ocasião"
@@ -31,10 +46,8 @@ export default function Home() {
             />
             <Line/>
 
-            
-            {/* Section Title
+            {/*
             <SectionTitle
-                image="/icons/Mini Logo Florir.png"
                 title="Catálogo Florir"
                 text="Todos os arranjos são criados com flores
                     naturais desidratadas manualmente,

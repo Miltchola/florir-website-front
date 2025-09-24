@@ -1,21 +1,21 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
 
+
 interface SectionTitleProps {
-  image: string;
   title: string;
   text?: string | ReactNode;
   children?: ReactNode;
 }
 
-export function SectionTitle ({children, image, title, text}:SectionTitleProps){
+export function SectionTitle ({children, title, text}:SectionTitleProps){
     return (
         <div className='display flex flex-col items-center text-center px-12 py-4 lg:px-60 sm:px-20'>
             <Image 
               className='h-12 w-auto md:w-auto md:h-12'
-              src={image}
+              src="/icons/Mini Logo Florir.png"
               alt="Logo Florir"
-              width={100} // defina width
+              width={100}
               height={100}
             />
             <div>

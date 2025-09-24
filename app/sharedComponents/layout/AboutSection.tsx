@@ -31,7 +31,7 @@ export function AboutSection ({
       transition={{ duration: 0.8, ease: 'easeOut' }}
       viewport={{ once: true }}
       className="flex flex-col lg:flex-row items-center justify-center w-full px-8 py-12 gap-8 my-4"
-      style={{ backgroundColor: "#DDB7AB" }}
+      style={{ backgroundColor: "var(--background-terciary)" }}
     >
       <div className="flex flex-row gap-8 flex-1 justify-center items-center">
         <Image
