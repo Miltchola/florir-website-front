@@ -2,7 +2,7 @@
 import React from 'react';
 
 
-export default function Sobre() {
+export default function AdminPage() {
     return (
         <div>
             <span>TEXTO</span>
