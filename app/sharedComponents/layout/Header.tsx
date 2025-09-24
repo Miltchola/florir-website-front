@@ -16,6 +16,7 @@ export function Header({
 }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const showHamburger = navLinks.length > 1;
   return (
     <header
       className="w-full flex items-center px-8"
@@ -26,73 +27,96 @@ export function Header({
         boxSizing: "border-box",
       }}
     >
-      {/* Logo centralizada em mobile, alinhada à esquerda em desktop */}
-      <div className="flex-1 flex justify-center lg:justify-start items-center">
-        <Image
-          src="/icons/Logo Florir.png"
-          alt="Logo Florir"
-          width={245}
-          height={145}
-          className="object-contain"
-          priority
-        />
+      {/* Logo sempre à esquerda */}
+      <div className="flex items-center">
+        <div className="transition-transform duration-500 ease-in-out hover:scale-115">
+          <Image
+            src="/icons/Logo Florir.png"
+            alt="Logo Florir"
+            width={200}
+            height={80}
+            className="object-contain"
+            priority
+            onClick={() => window.location.href = '/'}
+          />
+        </div>
       </div>
 
-      {/* Navegação desktop centralizada entre logo e borda direita */}
-        <nav className="hidden lg:flex flex-1 justify-center items-center">
-            <ul className="flex flex-row items-center justify-between w-full gap-16">
-                {navLinks.map((link) => (
-                  <li key={link.label} className="flex-1 flex justify-center">
-                    <a
-                        href={link.href}
-                        onClick={link.onClick}
-                        className="text-lg font-light tracking-wide whitespace-nowrap"
-                        style={{ color: "#5E635D", cursor: "pointer" }}
-                    >
-                    {link.label}
-                    </a>
-                  </li>
-                ))}
-            </ul>
-        </nav>
+      {/* Navegação desktop alinhada à direita */}
+      <nav className="hidden lg:flex items-center justify-end w-full">
+        <ul className="flex flex-row items-center gap-16 mr-4">
+          {navLinks.map((link) => (
+            <li key={link.label} className="flex justify-end">
+              <a
+                href={link.href}
+                onClick={link.onClick}
+                className="text-lg font-light tracking-wide whitespace-nowrap relative group
+                hover:scale-110 transition-transform duration-500 ease-in-out"
+                style={{ color: "#5E635D", cursor: "pointer" }}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       {/* Espaço à direita para centralizar os textos entre logo e borda direita */}
       <div className="hidden lg:flex items-center" style={{ flex: "0.65 1 0%" }}>
         {children}
       </div>
 
-      {/* Menu mobile */}
-      <div className="flex lg:hidden items-center">
-        <button
-          aria-label="Abrir menu"
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="p-2 rounded focus:outline-none"
-        >
-          {/* Ícone de menu hambúrguer */}
-          <svg width="32" height="32" fill="#5E635D" viewBox="0 0 24 24">
-            <rect y="6" width="24" height="2" rx="1"/>
-            <rect y="11" width="24" height="2" rx="1"/>
-            <rect y="16" width="24" height="2" rx="1"/>
-          </svg>
-        </button>
-        {/* Dropdown menu */}
-        {menuOpen && (
-          <div className="absolute top-[95px] right-0 w-48 bg-[#F8E8E3] shadow-lg rounded-b z-50 flex flex-col py-4">
+      {/* Mobile: navLinks à direita, logo à esquerda */}
+      <div className="flex lg:hidden flex-1 items-center justify-between">
+        {/* Logo já está à esquerda */}
+        {/* NavLinks ou Hamburguer à direita */}
+        {showHamburger ? (
+          <div className="flex items-center ml-auto">
+            <button
+              aria-label="Abrir menu"
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="p-2 rounded focus:outline-none"
+            >
+              <svg width="32" height="32" fill="#5E635D" viewBox="0 0 24 24">
+                <rect y="6" width="24" height="2" rx="1"/>
+                <rect y="11" width="24" height="2" rx="1"/>
+                <rect y="16" width="24" height="2" rx="1"/>
+              </svg>
+            </button>
+            {menuOpen && (
+                <div className="absolute top-[95px] right-0 w-48 bg-[#F8E8E3] shadow-lg rounded-b z-50 flex flex-col py-4 animate-slideDown">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      link.onClick && link.onClick();
+                    }}
+                    className="text-lg font-light tracking-wide px-4 py-2 relative group"
+                    style={{ color: "#5E635D", cursor: "pointer" }}
+                  >
+                    {link.label}
+                    <span className="underline-anim absolute left-0 -bottom-1 w-full h-[2px] bg-font-primary origin-left"></span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <nav className="flex items-center ml-auto">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                onClick={() => {
-                  setMenuOpen(false);
-                  link.onClick && link.onClick();
-                }}
+                onClick={link.onClick}
                 className="text-lg font-light tracking-wide px-4 py-2"
                 style={{ color: "#5E635D", cursor: "pointer" }}
               >
                 {link.label}
               </a>
             ))}
-          </div>
+          </nav>
         )}
       </div>
     </header>

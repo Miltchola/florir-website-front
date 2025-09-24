@@ -1,3 +1,19 @@
+/* Animação underline navLinks */
+.underline-anim {
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.group:hover .underline-anim {
+  transform: scaleX(1);
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-slideUp {
+  animation: slideUp 0.4s cubic-bezier(0.4,0,0.2,1);
+}
 @import "tailwindcss";
 
 :root {
@@ -22,6 +38,14 @@
     --background: var(--background-primary);
     --foreground: var(--font-primary);
   }
+}
+
+@keyframes slideDown {
+  0% { opacity: 0; transform: translateY(-30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-slideDown {
+  animation: slideDown 0.4s cubic-bezier(0.4,0,0.2,1);
 }
 
 body {

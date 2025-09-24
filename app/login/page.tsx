@@ -4,6 +4,8 @@ import { TextField } from './components/TextField';
 import { SectionTitle } from '../sharedComponents/ui/SectionTitle';
 import { Button } from '../sharedComponents/ui/Button';
 import Image from 'next/image';
+import { Header } from '../sharedComponents/layout/Header';
+import { div } from 'framer-motion/client';
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -31,46 +33,57 @@ export default function LoginPage() {
         }
     }
 
+    const navLinks = [
+        { label: 'VOLTAR', href: '/' },
+    ];
+
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background-primary">
-            <SectionTitle
-                title="Login de Usuário"
-                text="Faça Login para gerenciar as informações do site"
+        <div>
+            <Header
+                navLinks={navLinks}
             />
-            <div className="flex flex-row bg-[#DDB7AB] rounded-3xl p-8 gap-8 mt-8 shadow-lg max-w-3xl w-full justify-center items-center">
-                {/* Formulário */}
-                <form onSubmit={handleLogin} className="flex flex-col">
-                    <div className="bg-white rounded-2xl p-8 gap-4 w-[320px] min-w-[280px] max-w-[350px]">
-                        <TextField
-                            title="E-mail:"
-                            type="email"
-                            required
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            placeholder="exemplo@email.com"
-                        />
-                        <TextField
-                            title="Senha:"
-                            type="password"
-                            required
-                            value={senha}
-                            onChange={e => setSenha(e.target.value)}
-                            placeholder="Digite sua senha"
+            <div className="flex flex-col items-center justify-center min-h-screen bg-background-primary">
+                <SectionTitle
+                    title="Login de Usuário"
+                    text="Faça Login para gerenciar as informações do site"
+                />
+                <div className="flex flex-row bg-[#DDB7AB] rounded-3xl
+                    p-8 mb-20 gap-8 mt-8 shadow-lg max-w-3xl
+                    md:w-full justify-center items-center">
+                    {/* Formulário */}
+                    <form onSubmit={handleLogin} className="flex flex-col">
+                        <div className="bg-white rounded-2xl p-8 gap-4 w-[320px] min-w-[280px] max-w-[350px]">
+                            <TextField
+                                title="E-mail:"
+                                type="email"
+                                required
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                placeholder="exemplo@email.com"
+                            />
+                            <TextField
+                                title="Senha:"
+                                type="password"
+                                required
+                                value={senha}
+                                onChange={e => setSenha(e.target.value)}
+                                placeholder="Digite sua senha"
+                            />
+                        </div>
+                        <div className="flex justify-center mt-4">
+                            <Button text={loading ? "Entrando..." : "Login"} buttonColor="light" />
+                        </div>
+                    </form>
+                    {/* Imagem */}
+                    <div className="hidden md:block">
+                        <Image
+                            src="/images/Bolo Florido.jpeg"
+                            alt="Login Visual"
+                            width={260}
+                            height={260}
+                            className="rounded-2xl object-cover"
                         />
                     </div>
-                    <div className="flex justify-center mt-4">
-                        <Button text={loading ? "Entrando..." : "Login"} buttonColor="light" />
-                    </div>
-                </form>
-                {/* Imagem */}
-                <div className="hidden md:block">
-                    <Image
-                        src="/images/Bolo Florido.jpeg"
-                        alt="Login Visual"
-                        width={260}
-                        height={260}
-                        className="rounded-2xl object-cover"
-                    />
                 </div>
             </div>
         </div>
