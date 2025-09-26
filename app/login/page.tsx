@@ -5,7 +5,8 @@ import { SectionTitle } from '../sharedComponents/ui/SectionTitle';
 import { Button } from '../sharedComponents/ui/Button';
 import Image from 'next/image';
 import { Header } from '../sharedComponents/layout/Header';
-import { div } from 'framer-motion/client';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function LoginPage() {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:8000/users/login", {
+            const res = await fetch(`${API_BASE_URL}/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password: senha })
