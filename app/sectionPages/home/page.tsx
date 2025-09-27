@@ -5,6 +5,7 @@ import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
 import { ProdutoGrid } from "@/app/sharedComponents/produto/ProdutoGrid";
 import { Button } from "@/app/sharedComponents/ui/Button";
 import { Header } from "@/app/sharedComponents/layout/Header";
+import { Footer } from "@/app/sharedComponents/layout/Footer";
 
 import { HeroSection } from "./components/HeroSection";
 import { Carousel } from "./components/Carousel";
@@ -186,6 +187,7 @@ export default function Home() {
             mostrarBotaoVerTodas={true}
             />
 
+            <Footer navLinks={navLinks} />
         </div>
     );
 }
