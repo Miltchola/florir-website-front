@@ -66,6 +66,7 @@ export default function Home() {
                     trazendo alegria e elegância para cada ocasião.`}
                 buttonText="Saiba Mais"
                 buttonStatus={true}
+                buttonLink={() => window.location.href = '/sectionPages/sobre'}
             />
 
             <Line/>
