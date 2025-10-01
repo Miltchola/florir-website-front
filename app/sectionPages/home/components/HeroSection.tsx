@@ -32,7 +32,7 @@ export function HeroSection({ children, logo, title, text, image, buttonText }: 
             <div className="button mx-4">
                 <Button
                     text={buttonText}
-                    onClick={() => alert('Button Clicked!')}
+                    onClick={() => window.location.href = '/sectionPages/produtos'}
                 />
             </div>
         </div>
