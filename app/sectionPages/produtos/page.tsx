@@ -7,6 +7,7 @@ import React from 'react';
 
 export default function Produtos() {
     const navLinks = [
+        { label: 'HOME', href: '/' },
         { label: 'SOBRE MIM', href: '/sectionPages/sobre' },
         { label: 'PRODUTOS', href: '/sectionPages/produtos' },
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
