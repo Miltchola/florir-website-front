@@ -82,9 +82,9 @@ export default function Home() {
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
                         preco: "R$ 150,00",
                         recomendado: true,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinho!')
                     },
                     {
                         imagem: "/images/Bolo Florido.jpeg",
@@ -92,9 +92,9 @@ export default function Home() {
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
                         preco: "R$ 150,00",
                         recomendado: true,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinhotesteee!')
                     },
                     {
                         imagem: "/images/Buquê.jpeg",
@@ -102,9 +102,9 @@ export default function Home() {
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
                         preco: "R$ 75,00",
                         recomendado: false,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Outro TESTEEE')
                     },
                     {
                         imagem: "/images/Anel Florido.jpeg",
@@ -112,9 +112,9 @@ export default function Home() {
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
                         preco: "R$ 150,00",
                         recomendado: true,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinho!')
                     },
                     {
                         imagem: "/images/Bolo Florido.jpeg",
@@ -122,9 +122,9 @@ export default function Home() {
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
                         preco: "R$ 150,00",
                         recomendado: true,
+                        disponiveis: 2,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinhotesteee!')
                     },
                     {
                         imagem: "/images/Buquê.jpeg",
@@ -132,9 +132,9 @@ export default function Home() {
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
                         preco: "R$ 75,00",
                         recomendado: false,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Outro TESTEEE')
                     },
                 ]}
                 quantidade={3} // ou null para mostrar todas
