@@ -14,6 +14,7 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
 
     async function handleLogin(e: React.FormEvent) {
+        console.log(API_BASE_URL);
         e.preventDefault();
         setLoading(true);
         try {
@@ -23,7 +24,10 @@ export default function LoginPage() {
                 body: JSON.stringify({ email, password: senha })
             });
             if (res.ok) {
+                const data = await res.json();
+                localStorage.setItem("authToken", data.token); // Salva o token
                 alert("Login realizado com sucesso!");
+                window.location.href = "/adminPage"; // Redireciona
             } else {
                 alert("E-mail ou senha inválidos.");
             }
