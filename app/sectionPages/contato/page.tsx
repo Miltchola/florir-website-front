@@ -62,9 +62,9 @@ const Contato: React.FC = () => {
                         <h3 className="text-3xl font-serif text-[#5E635D]">Quer conversar?</h3>
                         <p className="text-sm text-[#6b6f69] max-w-sm">Inicie rapidamente uma conversa pelo WhatsApp comigo pelo QR Code abaixo:</p>
                         
-                                                <div className="mt-4">
-                                                    <QRBox data={whatsappLink} />
-                                                </div>
+                                                        <div className="mt-4">
+                                                            <QRBox data={whatsappLink} size={200} />
+                                                        </div>
 
                         <p className="text-sm text-[#6b6f69] my-2">ou por este Botão:</p>
 

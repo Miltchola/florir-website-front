@@ -24,7 +24,7 @@ const SocialLinksCard: React.FC<SocialLinksCardProps> = ({ title = 'Redes Sociai
             href={l.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 py-3 px-4 rounded-lg bg-[#E7C5C0] text-sm font-medium text-white transition-transform hover:scale-105"
+            className="flex items-center gap-3 py-3 px-4 rounded-lg bg-[#E7C5C0] text-sm font-medium text-white transition-transform transform hover:-translate-y-1 hover:scale-102 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E7C5C0]"
           >
             <div className="text-current text-white">
               {l.icon}
