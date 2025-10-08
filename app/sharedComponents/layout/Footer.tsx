@@ -14,23 +14,29 @@ export function Footer({ navLinks }: FooterProps) {
         fontFamily: "inherit",
       }}
     >
-      <div className="relative w-full">
+      <div className="relative w-full md:flex md:items-start">
         {/* Logo: canto superior esquerdo no desktop, centralizada no mobile */}
-        <div className="flex md:block justify-center md:justify-start">
-          <div className="w-64 h-64 md:w-[260px] md:h-[260px]">
+        <div className="flex justify-center md:justify-start md:flex-shrink-0">
+          <div className="w-64 h-24 md:w-[260px] md:h-[100px]">
             <Image
               src="/icons/Sublogo Florir.png"
               alt="Sublogo Florir"
               width={260}
-              height={260}
+              height={100}
               className="object-contain w-full h-full"
               priority
             />
           </div>
         </div>
 
+        {/* Divider para desktop */}
+        <div
+          className="hidden md:block mx-8"
+          style={{ borderLeft: "2px solid #5E635D", height: "auto" }}
+        />
+
         {/* Conteúdo centralizado com padding à esquerda para não sobrepor a logo no desktop */}
-        <div className="flex flex-col md:flex-row gap-16 md:gap-32 justify-between items-center md:items-start w-full mt-8 md:mt-0 md:pl-[340px]">
+        <div className="flex flex-col md:flex-row gap-16 md:gap-32 justify-between items-center md:items-start w-full mt-8 md:mt-0 md:pl-0 md:flex-grow">
           {/* Social */}
           <div className="flex flex-col md:items-start items-center">
             <h3 className="font-semibold mb-2 text-sm md:text-left text-center" style={{ color: "#5E635D" }}>
@@ -123,9 +129,9 @@ export function Footer({ navLinks }: FooterProps) {
         </div>
       </div>
 
-      {/* Divider */}
+      {/* Divider original (apenas para mobile) */}
       <div
-        className="w-full my-6"
+        className="w-full my-6 md:hidden"
         style={{ borderTop: "2px solid #5E635D" }}
       />
 
@@ -137,3 +143,4 @@ export function Footer({ navLinks }: FooterProps) {
     </footer>
   );
 }
+
