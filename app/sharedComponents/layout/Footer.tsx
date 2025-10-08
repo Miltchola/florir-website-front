@@ -7,34 +7,33 @@ interface FooterProps {
 export function Footer({ navLinks }: FooterProps) {
   return (
     <footer
-      className="w-full px-8 pt-16 pb-10"
+      className="w-full px-8 pt-10 pb-10"
       style={{
         backgroundColor: "#F8E8E3",
         color: "#5E635D",
         fontFamily: "inherit",
       }}
     >
-      <div className="flex flex-col md:flex-row gap-32 md:gap-0 justify-between items-start w-full">
-        {/* Logo */}
-        <div className="mb-6 md:mb-0 flex-shrink-0">
-          <Image
-            src="/icons/Sublogo Florir.png"
-            alt="Subogo Florir"
-            width={320}
-            height={320}
-            className="object-contain"
-            priority
-          />
+      <div className="relative w-full">
+        {/* Logo: canto superior esquerdo no desktop, centralizada no mobile */}
+        <div className="flex md:block justify-center md:justify-start">
+          <div className="w-64 h-64 md:w-[260px] md:h-[260px]">
+            <Image
+              src="/icons/Sublogo Florir.png"
+              alt="Sublogo Florir"
+              width={260}
+              height={260}
+              className="object-contain w-full h-full"
+              priority
+            />
+          </div>
         </div>
 
-        {/* Divider */}
-        <div className="hidden md:block h-full border-l border-[#5E635D] mx-8" />
-
-        {/* Info Columns */}
-        <div className="flex flex-col md:flex-row gap-32 w-full justify-between">
+        {/* Conteúdo centralizado com padding à esquerda para não sobrepor a logo no desktop */}
+        <div className="flex flex-col md:flex-row gap-16 md:gap-32 justify-between items-center md:items-start w-full mt-8 md:mt-0 md:pl-[340px]">
           {/* Social */}
-          <div>
-            <h3 className="font-semibold mb-2" style={{ color: "#5E635D" }}>
+          <div className="flex flex-col md:items-start items-center">
+            <h3 className="font-semibold mb-2 text-sm md:text-left text-center" style={{ color: "#5E635D" }}>
               ACOMPANHE FLORIR:
             </h3>
             <ul className="space-y-8">
@@ -76,8 +75,8 @@ export function Footer({ navLinks }: FooterProps) {
           </div>
 
           {/* Contact */}
-          <div>
-            <h3 className="font-semibold mb-2" style={{ color: "#5E635D" }}>
+          <div className="flex flex-col md:items-start items-center">
+            <h3 className="font-semibold mb-2 text-sm md:text-left text-center" style={{ color: "#5E635D" }}>
               ENTRE EM CONTATO:
             </h3>
             <ul className="space-y-8">
@@ -102,9 +101,9 @@ export function Footer({ navLinks }: FooterProps) {
             </ul>
           </div>
 
-          {/* Menu */}
-          <div>
-            <h3 className="font-semibold mb-2" style={{ color: "#5E635D" }}>
+          {/* Menu - hidden on mobile */}
+          <div className="hidden md:flex flex-col items-start">
+            <h3 className="font-semibold mb-2 text-sm" style={{ color: "#5E635D" }}>
               MENU
             </h3>
             <ul className="space-y-8">
@@ -112,7 +111,7 @@ export function Footer({ navLinks }: FooterProps) {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="hover:underline"
+                    className="hover:underline normal-case"
                     style={{ color: "#5E635D" }}
                   >
                     {link.label}
