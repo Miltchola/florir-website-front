@@ -14,10 +14,10 @@ export function Footer({ navLinks }: FooterProps) {
         fontFamily: "inherit",
       }}
     >
-      <div className="relative w-full md:flex md:items-start">
+      <div className="relative w-full lg:flex lg:items-start">
         {/* Logo: canto superior esquerdo no desktop, centralizada no mobile */}
-        <div className="flex justify-center md:justify-start md:flex-shrink-0">
-          <div className="w-64 h-24 md:w-[260px] md:h-[100px]">
+        <div className="flex justify-center lg:justify-start lg:flex-shrink-0">
+          <div className="w-64 h-24 lg:w-[260px] lg:h-[100px]">
             <Image
               src="/icons/Sublogo Florir.png"
               alt="Sublogo Florir"
@@ -31,15 +31,15 @@ export function Footer({ navLinks }: FooterProps) {
 
         {/* Divider para desktop */}
         <div
-          className="hidden md:block mx-8"
+          className="hidden lg:block mx-8"
           style={{ borderLeft: "2px solid #5E635D", height: "auto" }}
         />
 
         {/* Conteúdo centralizado com padding à esquerda para não sobrepor a logo no desktop */}
-        <div className="flex flex-col md:flex-row gap-16 md:gap-32 justify-between items-center md:items-start w-full mt-8 md:mt-0 md:pl-0 md:flex-grow">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 justify-between items-center lg:items-start w-full mt-8 lg:mt-0 lg:pl-0 lg:flex-grow">
           {/* Social */}
-          <div className="flex flex-col md:items-start items-center">
-            <h3 className="font-semibold mb-2 text-sm md:text-left text-center" style={{ color: "#5E635D" }}>
+          <div className="flex flex-col lg:items-start items-center">
+            <h3 className="font-semibold mb-2 text-sm lg:text-left text-center" style={{ color: "#5E635D" }}>
               ACOMPANHE FLORIR:
             </h3>
             <ul className="space-y-8">
@@ -81,8 +81,8 @@ export function Footer({ navLinks }: FooterProps) {
           </div>
 
           {/* Contact */}
-          <div className="flex flex-col md:items-start items-center">
-            <h3 className="font-semibold mb-2 text-sm md:text-left text-center" style={{ color: "#5E635D" }}>
+          <div className="flex flex-col lg:items-start items-center">
+            <h3 className="font-semibold mb-2 text-sm lg:text-left text-center" style={{ color: "#5E635D" }}>
               ENTRE EM CONTATO:
             </h3>
             <ul className="space-y-8">
@@ -108,7 +108,7 @@ export function Footer({ navLinks }: FooterProps) {
           </div>
 
           {/* Menu - hidden on mobile */}
-          <div className="hidden md:flex flex-col items-start">
+          <div className="hidden lg:flex flex-col items-start">
             <h3 className="font-semibold mb-2 text-sm" style={{ color: "#5E635D" }}>
               MENU
             </h3>
@@ -131,7 +131,7 @@ export function Footer({ navLinks }: FooterProps) {
 
       {/* Divider original (apenas para mobile) */}
       <div
-        className="w-full my-6 md:hidden"
+        className="w-full my-6 lg:hidden"
         style={{ borderTop: "2px solid #5E635D" }}
       />
 
