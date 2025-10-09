@@ -8,7 +8,7 @@ interface Produto {
 	imagem: string;
 	nome: string;
 	descricao: string;
-	preco: string;
+	preco: number;
 	recomendado: boolean;
 	disponiveis: number;
 	tipo: string;
@@ -50,7 +50,7 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 	const produtosExibidos = quantidade == null ? produtosFiltrados : produtosFiltrados.slice(0, quantidade);
 
 	return (
-		<div className="flex flex-col items-center w-full my-4">
+		<div className="flex flex-col items-center w-full">
 			{topMenu && (
 				<div className="w-full flex flex-col gap-4 mb-4">
 					{/* Barra de filtros responsiva */}
@@ -114,6 +114,7 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 							tipo={p.tipo}
 							buttonText={p.buttonText}
 							buttonLink={p.buttonLink}
+							adminEdit={adminEdit}
 						/>
 					</motion.div>
 				)))

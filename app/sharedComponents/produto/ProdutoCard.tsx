@@ -2,12 +2,13 @@ import { ReactNode, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/app/sharedComponents/ui/Button';
 import { ProdutoModal } from './ProdutoModal';
+import { div } from 'framer-motion/client';
 
 interface ProdutoProps {
     imagem: string;
     nome: string;
     descricao: string;
-    preco: string;
+    preco: number;
     recomendado: boolean;
     disponiveis: number;
     tipo: string;
@@ -25,6 +26,7 @@ export function ProdutoCard({
     tipo,
     buttonText,
     buttonLink,
+    adminEdit,
     disponiveis,
 }: ProdutoProps) {
     const [modalOpen, setModalOpen] = useState(false);
@@ -48,11 +50,32 @@ export function ProdutoCard({
                     Preço: {preco}
                 </p>
                 <div className="flex">
-                    <Button
-                        text={buttonText}
-                        onClick={() => setModalOpen(true)}
-                        buttonColor="dark"
-                    />
+                    {!adminEdit && (
+                        <Button
+                            text={buttonText}
+                            onClick={() => setModalOpen(true)}
+                            buttonColor="dark"
+                        />
+                    )}
+                    
+                    {adminEdit && (
+                        <div className='flex'>
+                            <Button
+                                text="Editar"
+                                onClick={() => alert('Função de editar produto')}
+                                buttonColor="dark"
+                            />
+                            <div className="flex ml-2 justify-center items-center
+                            cursor-pointer hover:scale-120 transition ease-in-out duration-300">
+                                <Image
+                                    src="/icons/delete.png"
+                                    alt="Editar"
+                                    width={32}
+                                    height={32}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             <ProdutoModal
@@ -61,7 +84,7 @@ export function ProdutoCard({
                 imagem={imagem}
                 nome={nome}
                 descricao={descricao}
-                preco={preco}
+                preco={preco.toString()}
                 recomendado={recomendado}
                 tipo={tipo}
                 disponiveis={disponiveis}
