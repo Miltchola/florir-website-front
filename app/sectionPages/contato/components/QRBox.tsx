@@ -10,25 +10,26 @@ interface QRBoxProps {
 }
 
 const QRBox: React.FC<QRBoxProps> = ({ data, size = 220, alt = 'QR Code' }) => {
-  // Usamos api.qrserver para gerar a imagem do QR; size x size
-  const pixelSize = Math.max(80, size); // mínimo 80px
+  const pixelSize = Math.max(80, size);
   const qrUrl = data
     ? `https://api.qrserver.com/v1/create-qr-code/?size=${pixelSize}x${pixelSize}&data=${encodeURIComponent(data)}`
     : null;
 
-  // converter px para classes ou inline style
   const imgStyle: React.CSSProperties = {
     width: pixelSize,
     height: pixelSize,
   };
 
   return (
-    <div className="w-full max-w-[280px] bg-[#D9E0D8] rounded-lg flex items-center justify-center shadow-sm" style={{ padding: 12 }}>
+    <div 
+      className="w-full max-w-[280px] bg-[#CDE6D8] rounded-2xl flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-105" 
+      style={{ padding: 16 }}
+    >
       {qrUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={qrUrl} alt={alt} style={imgStyle} />
+        <img src={qrUrl} alt={alt} style={imgStyle} className="rounded-lg" />
       ) : (
-        <div style={imgStyle} className="bg-[#bfc9c1] rounded-md" />
+        <div style={imgStyle} className="bg-[#b8d4c7] rounded-lg" />
       )}
     </div>
   );
