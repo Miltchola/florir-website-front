@@ -5,6 +5,7 @@ import { AboutSection } from "@/app/sharedComponents/layout/AboutSection";
 import { ProdutoGrid } from "@/app/sharedComponents/produto/ProdutoGrid";
 import { Button } from "@/app/sharedComponents/ui/Button";
 import { Header } from "@/app/sharedComponents/layout/Header";
+import { Footer } from "@/app/sharedComponents/layout/Footer";
 
 import { HeroSection } from "./components/HeroSection";
 import { Carousel } from "./components/Carousel";
@@ -12,6 +13,7 @@ import { QuestionHandler } from "@/app/sharedComponents/question/QuestionHandler
 
 export default function Home() {
     const navLinks = [
+        { label: 'HOME', href: '/' },
         { label: 'SOBRE MIM', href: '/sectionPages/sobre' },
         { label: 'PRODUTOS', href: '/sectionPages/produtos' },
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
@@ -69,72 +71,67 @@ export default function Home() {
                 buttonLink={() => window.location.href = '/sectionPages/sobre'}
             />
 
-            <Line/>
-            <div className="w-full flex justify-start px-16">
-                <SectionDivision text="Produtos"/>
-            </div>
-
             <ProdutoGrid
                 produtos={[
                     {
                         imagem: "/images/Anel Florido.jpeg",
                         nome: "Arranjo Floral Exclusivo",
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: "R$ 150,00",
+                        preco: 150,
                         recomendado: true,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinho!')
                     },
                     {
                         imagem: "/images/Bolo Florido.jpeg",
                         nome: "Arranjo Floral Exclusivo",
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: "R$ 150,00",
+                        preco: 70.00,
                         recomendado: true,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinhotesteee!')
                     },
                     {
                         imagem: "/images/Buquê.jpeg",
                         nome: "Buquê de Flores Desidratadas",
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: "R$ 75,00",
+                        preco: 75.00,
                         recomendado: false,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Outro TESTEEE')
                     },
                     {
                         imagem: "/images/Anel Florido.jpeg",
                         nome: "Arranjo Floral Exclusivo",
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: "R$ 150,00",
+                        preco: 50.00,
                         recomendado: true,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinho!')
                     },
                     {
                         imagem: "/images/Bolo Florido.jpeg",
                         nome: "Arranjo Floral Exclusivo",
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: "R$ 150,00",
+                        preco: 78.00,
                         recomendado: true,
+                        disponiveis: 2,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Produto Adicionado ao Carrinhotesteee!')
                     },
                     {
                         imagem: "/images/Buquê.jpeg",
                         nome: "Buquê de Flores Desidratadas",
                         descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: "R$ 75,00",
+                        preco: 75.00,
                         recomendado: false,
+                        disponiveis: 5,
                         tipo: "Decoração",
                         buttonText: "Ver mais",
-                        buttonLink: () => alert('Outro TESTEEE')
                     },
                 ]}
                 quantidade={3} // ou null para mostrar todas
@@ -187,6 +184,7 @@ export default function Home() {
             mostrarBotaoVerTodas={true}
             />
 
+            <Footer navLinks={navLinks} />
         </div>
     );
 }

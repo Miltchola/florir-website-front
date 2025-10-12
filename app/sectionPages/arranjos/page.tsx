@@ -5,6 +5,7 @@ import { SectionTitle } from '@/app/sharedComponents/ui/SectionTitle';
 
 export default function Arranjos() {
     const navLinks = [
+        { label: 'HOME', href: '/' },
         { label: 'SOBRE MIM', href: '/sectionPages/sobre' },
         { label: 'PRODUTOS', href: '/sectionPages/produtos' },
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
