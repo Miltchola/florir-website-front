@@ -3,6 +3,8 @@ import { Button } from '@/app/sharedComponents/ui/Button';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { SectionDivision } from '../ui/SectionDivision';
+import { Line } from '../ui/Line';
 
 interface Produto {
 	imagem: string;
@@ -27,10 +29,12 @@ interface ProdutoGridProps {
 
 const categorias = [
 	{ label: "Todos", value: "todos" },
-	{ label: "Cúpulas", value: "cúpulas" },
-	{ label: "Quadros", value: "quadros" },
+	{ label: "Acessórios", value: "acessorios" },
+	{ label: "Arranjos", value: "arranjos" },
 	{ label: "Buquês", value: "buquês" },
 	{ label: "Casamento", value: "casamento" },
+	{ label: "Cúpulas", value: "cúpulas" },
+	{ label: "Quadros", value: "quadros" },
 	{ label: "Outros", value: "outros" },
 ];
 
@@ -89,6 +93,18 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 					</div>
 				</div>
 			)}
+			<Line/>
+            <div className="w-full flex flex-col sm:flex-row sm:justify-start px-4 sm:px-16 items-center sm:items-start gap-4 sm:gap-0">
+				<SectionDivision text="Produtos" />
+				{adminEdit && (
+					<div className="w-full flex justify-center sm:justify-end">
+						<Button
+							text="Adicionar Produto"
+							onClick={() => { alert('Função de adicionar produto') }}
+						/>
+					</div>
+				)}
+			</div>
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 my-12 w-full justify-items-center">
 				{produtosExibidos.length === 0 ? (
 					<div className="w-full flex justify-center items-center col-span-full">

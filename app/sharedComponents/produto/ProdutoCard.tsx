@@ -47,7 +47,7 @@ export function ProdutoCard({
                 </div>
                 <h2 className="font-bold leading-8 mb-2">{nome}</h2>
                 <p className="text-font-primary text-base font-thin mb-4 text-left">
-                    Preço: {preco}
+                    Preço: {preco.toFixed(2).replace('.', ',')}
                 </p>
                 <div className="flex">
                     {!adminEdit && (
@@ -84,7 +84,7 @@ export function ProdutoCard({
                 imagem={imagem}
                 nome={nome}
                 descricao={descricao}
-                preco={preco.toString()}
+                preco={preco.toFixed(2).replace('.', ',')}
                 recomendado={recomendado}
                 tipo={tipo}
                 disponiveis={disponiveis}

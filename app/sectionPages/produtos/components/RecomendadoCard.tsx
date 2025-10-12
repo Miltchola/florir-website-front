@@ -69,7 +69,7 @@ export default function RecomendadoProduto({ produtos }: RecomendadoProdutoProps
                             <h3 className="text-lg font-semibold mb-2">{produto.tipo}</h3>
                             <h2 className="text-2xl font-serif font-medium mb-1">{produto.nome}</h2>
                             <p className="text-base text-font-primary mb-4">{produto.descricao}</p>
-                            <p className="text-xl font-bold mb-1">R$ {produto.preco.toFixed(2)}</p>
+                            <p className="text-xl font-bold mb-1">R$ {produto.preco.toFixed(2).replace('.', ',')}</p>
                             <p className="text-sm text-gray-500 mb-4">Disponíveis: {produto.disponiveis}</p>
                             <Button
                                 text="QUERO PRA MIM"
@@ -137,7 +137,7 @@ export default function RecomendadoProduto({ produtos }: RecomendadoProdutoProps
                 imagem={produto.imagem}
                 nome={produto.nome}
                 descricao={produto.descricao}
-                preco={produto.preco.toFixed(2)}
+                preco={produto.preco.toFixed(2).replace('.', ',')}
                 recomendado={produto.recomendado}
                 tipo={produto.tipo}
                 disponiveis={produto.disponiveis}

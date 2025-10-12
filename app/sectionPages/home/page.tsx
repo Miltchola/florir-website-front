@@ -70,11 +70,6 @@ export default function Home() {
                 buttonLink={() => window.location.href = '/sectionPages/sobre'}
             />
 
-            <Line/>
-            <div className="w-full flex justify-start px-16">
-                <SectionDivision text="Produtos"/>
-            </div>
-
             <ProdutoGrid
                 produtos={[
                     {
