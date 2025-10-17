@@ -27,7 +27,7 @@ export default function LoginPage() {
                 const data = await res.json();
                 localStorage.setItem("authToken", data.token); // Salva o token
                 alert("Login realizado com sucesso!");
-                window.location.href = "/adminPage"; // Redireciona
+                window.location.href = "/adminPage/hero"; // Redireciona
             } else {
                 alert("E-mail ou senha inválidos.");
             }
