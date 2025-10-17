@@ -137,7 +137,7 @@ export default function RecomendadoProduto({ produtos }: RecomendadoProdutoProps
                 imagem={produto.imagem}
                 nome={produto.nome}
                 descricao={produto.descricao}
-                preco={produto.preco.toFixed(2).replace('.', ',')}
+                preco={produto.preco}
                 recomendado={produto.recomendado}
                 tipo={produto.tipo}
                 disponiveis={produto.disponiveis}

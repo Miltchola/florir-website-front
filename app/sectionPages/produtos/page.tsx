@@ -4,6 +4,7 @@ import { ProdutoGrid } from '@/app/sharedComponents/produto/ProdutoGrid';
 import { SectionTitle } from '@/app/sharedComponents/ui/SectionTitle';
 import React from 'react';
 import RecomendadoCard from './components/RecomendadoCard';
+import { Footer } from '@/app/sharedComponents/layout/Footer';
 
 
 export default function Produtos() {
@@ -102,6 +103,8 @@ export default function Produtos() {
                 topMenu={true}
                 adminEdit={false}
             />
+
+            <Footer navLinks={navLinks} />
         </div>
     );
 }
