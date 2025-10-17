@@ -24,13 +24,15 @@ export default function Home() {
             
             <Header navLinks={navLinks} />
             
-            <HeroSection
-                logo="/icons/Mini Logo Florir.png"
-                title="Flores lindas para qualquer ocasião"
-                text="Dê vida a sua casa com arranjos florais desidratados personalizados"
-                image="/images/Flor sem fundo.png"
-                buttonText="Ver Mais"
-            />
+            <div>
+                <HeroSection
+                    logo="/icons/Mini Logo Florir.png"
+                    title="Flores lindas para qualquer ocasião"
+                    text="Dê vida a sua casa com arranjos florais desidratados personalizados"
+                    image="/images/Flor sem fundo.png"
+                    buttonText="Ver Mais"
+                />
+            </div>
 
             <Line/>
             <Carousel
