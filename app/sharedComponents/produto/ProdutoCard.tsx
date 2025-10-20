@@ -2,6 +2,7 @@ import { ReactNode, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/app/sharedComponents/ui/Button';
 import { ProdutoModal } from './ProdutoModal';
+import { ProdutoModalEdit } from '@/app/adminPage/produtos/components/ProdutoModalEdit';
 import { div } from 'framer-motion/client';
 
 interface ProdutoProps {
@@ -30,6 +31,7 @@ export function ProdutoCard({
     disponiveis,
 }: ProdutoProps) {
     const [modalOpen, setModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
 
     return (
         <>
@@ -72,7 +74,7 @@ export function ProdutoCard({
                         <div className='flex'>
                             <Button
                                 text="Editar"
-                                onClick={() => alert('Função de editar produto')}
+                                onClick={() => setEditModalOpen(true)}
                                 buttonColor="dark"
                             />
                             <div className="flex ml-2 justify-center items-center
@@ -88,19 +90,38 @@ export function ProdutoCard({
                     )}
                 </div>
             </div>
-            <ProdutoModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)}
-                imagem={imagem}
-                nome={nome}
-                descricao={descricao}
-                preco={preco}
-                recomendado={recomendado}
-                tipo={tipo}
-                disponiveis={disponiveis}
-                buttonText={buttonText}
-                buttonLink={buttonLink}
-            />
+            {modalOpen && (
+                <ProdutoModal
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    imagem={imagem}
+                    nome={nome}
+                    descricao={descricao}
+                    preco={preco}
+                    recomendado={recomendado}
+                    tipo={tipo}
+                    disponiveis={disponiveis}
+                    buttonText={buttonText}
+                    buttonLink={buttonLink}
+                />
+            )}
+
+            {editModalOpen && (
+                <ProdutoModalEdit
+                    open={editModalOpen}
+                    onClose={() => setEditModalOpen(false)}
+                    imagem={imagem}
+                    nome={nome}
+                    descricao={descricao}
+                    preco={preco}
+                    recomendado={recomendado}
+                    tipo={tipo}
+                    disponiveis={disponiveis}
+                    buttonText={buttonText}
+                    buttonLink={buttonLink}
+                    adminEdit={adminEdit}
+                />
+            )}
         </>
     );
 }
