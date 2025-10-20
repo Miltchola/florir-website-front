@@ -1,19 +1,22 @@
 "use client";
-import { Header } from '@/app/sharedComponents/layout/Header';
+import React, { useEffect } from 'react';
+import { Header } from '../../sharedComponents/layout/Header';
 import { ProdutoGrid } from '@/app/sharedComponents/produto/ProdutoGrid';
+import RecomendadoCard from '@/app/sectionPages/produtos/components/RecomendadoCard';
 import { SectionTitle } from '@/app/sharedComponents/ui/SectionTitle';
-import React from 'react';
-import RecomendadoCard from './components/RecomendadoCard';
-import { Footer } from '@/app/sharedComponents/layout/Footer';
 
+export default function ProdutosAdmin() {
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            window.location.href = "/login";
+        }
+    }, []);
 
-export default function Produtos() {
     const navLinks = [
-        { label: 'HOME', href: '/' },
-        { label: 'SOBRE MIM', href: '/sectionPages/sobre' },
-        { label: 'PRODUTOS', href: '/sectionPages/produtos' },
-        { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
-        { label: 'CONTATO', href: '/sectionPages/contato' },
+        { label: 'HERO', href: '/adminPage/hero' },
+        { label: 'PRODUTOS', href: '/adminPage/produtos' },
+        { label: 'VOLTAR', href: '/' },
     ];
 
     const produtos=[
@@ -78,12 +81,12 @@ export default function Produtos() {
                         buttonText: "Ver mais",
                     },
                 ]
+
     return (
         <div>
             <Header
                 navLinks={navLinks}
             />
-
             <SectionTitle
                 title="Catálogo Florir"
                 text="Todos os arranjos são criados com flores naturais
@@ -98,13 +101,11 @@ export default function Produtos() {
 
             <ProdutoGrid
                 produtos={produtos}
-                quantidade={null} // ou null para mostrar todas
+                quantidade={null}
                 mostrarBotaoVerTodos={false}
                 topMenu={true}
-                adminEdit={false}
+                adminEdit={true}
             />
-
-            <Footer navLinks={navLinks} />
         </div>
     );
 }

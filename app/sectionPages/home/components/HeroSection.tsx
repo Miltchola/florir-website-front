@@ -13,7 +13,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ children, logo, title, text, image, buttonText }: HeroSectionProps) {
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-between w-full px-20 py-12 gap-8">
+    <div className="flex flex-col lg:flex-row items-center justify-between w-full px-20 py-12 gap-8 xl:gap-32">
 
         <div className="left flex flex-col items-start flex-1 max-w-xl">
             <Image 
