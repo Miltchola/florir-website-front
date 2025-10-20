@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface CardProps {
+interface ValoresProps {
     valor1: string;
     texto1: string;
     valor2: string;
@@ -11,7 +11,7 @@ interface CardProps {
     texto3: string;
 }
 
-export function Valores({ valor1, texto1, valor2, texto2, valor3, texto3 }: CardProps) {
+export function Valores({ valor1, texto1, valor2, texto2, valor3, texto3 }: ValoresProps) {
   return (
     <div>
 

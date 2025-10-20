@@ -12,12 +12,12 @@ import CTAButton from './components/CTAButton';
 
 // Importando os ícones
 import { FaWhatsapp, FaRegEnvelope, FaMapMarkerAlt, FaRegClock, FaInstagram, FaTiktok } from 'react-icons/fa';
+import { Footer } from '@/app/sharedComponents/layout/Footer';
 
 interface NavLink {
     label: string;
     href: string;
 }
-
 const Contato: React.FC = () => {
     const navLinks: NavLink[] = [
         { label: 'SOBRE MIM', href: '/sectionPages/sobre' },
@@ -110,7 +110,7 @@ const Contato: React.FC = () => {
                 </div>
             </main>
 
-            {/* Footer será adicionado por outra pessoa */}
+            <Footer navLinks={navLinks} />
         </div>
     );
 };
