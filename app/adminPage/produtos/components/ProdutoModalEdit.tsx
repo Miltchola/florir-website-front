@@ -126,7 +126,7 @@ export function ProdutoModalEdit({
                                 </div>
                             </div>
                             <div className="flex gap-4 mb-2">
-                                <Button text="REMOVER PRODUTO" buttonColor="dark" width="100%" />
+                                <Button text="REMOVER PRODUTO" buttonColor="red" isDelete={true} width="100%" />
                             </div>
                             <div className="flex gap-4">
                                 <Button text="ATUALIZAR" buttonColor="dark" width="50%" />

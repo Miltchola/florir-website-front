@@ -6,6 +6,8 @@ import React from 'react';
 import RecomendadoCard from './components/RecomendadoCard';
 import { Footer } from '@/app/sharedComponents/layout/Footer';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 
 export default function Produtos() {
     const navLinks = [
@@ -15,6 +17,24 @@ export default function Produtos() {
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
         { label: 'CONTATO', href: '/sectionPages/contato' },
     ];
+
+    async function fetchProdutos() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/produtos`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+            if (res.ok) {
+                // precisa ver como fazer
+                const data = await res.json();
+                return data.produtos; // Supondo que a resposta tenha um campo 'produtos'
+            } else {
+                alert("E-mail ou senha inválidos.");
+            }
+        } catch (error) {
+            console.error("Erro ao buscar produtos:", error);
+        }
+    }
 
     const produtos=[
                     {
