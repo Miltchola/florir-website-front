@@ -5,6 +5,7 @@ import { SectionTitle } from '@/app/sharedComponents/ui/SectionTitle';
 import React from 'react';
 import { Card } from './components/Card';
 import { Inspiration } from './components/Inspiration';
+import { Valores } from './components/Valores';
 
 export default function Sobre() {
     const navLinks = [
@@ -37,6 +38,24 @@ export default function Sobre() {
                 text3="Hoje, como fundadora da Florir, sinto-me honrada em poder transformar sonhos em realidade através das minhas criações florais. Cada arranjo é feito com amor, dedicação e um toque especial de criatividade, refletindo a essência e a personalidade de cada cliente. Acredito que as flores têm o poder de tocar corações e criar memórias duradouras, e é isso que me motiva a continuar florescendo junto com a Florir."
                 imagePosition = "left"
             />
+
+            {/* Seção duplicada com imagem à direita (invertida) */}
+            <Inspiration
+                image="/images/Tati Bolo.jpeg"
+                text1="De vida à sua casa com arranjos florais desidratados personalizados. De vida à sua casa com arranjos florais desidratados personalizados."
+                text2="De vida à sua casa com arranjos florais desidratados personalizados. De vida à sua casa com arranjos florais desidratados personalizados."
+                text3="De vida à sua casa com arranjos florais desidratados personalizados. De vida à sua casa com arranjos florais desidratados personalizados."
+                imagePosition = "right"
+            />
+
+                        <Valores
+                            valor1="/icons/right.png"
+                            texto1="Sustentabilidade"
+                            valor2="/icons/right.png"
+                            texto2="Originalidade"
+                            valor3="/icons/right.png"
+                            texto3="Feito à mão"
+                        />
 
             <Line/>
         </div>
