@@ -61,15 +61,14 @@ export default function Arranjos() {
                     text="Arranjos desidratados são flores naturais que passam por um processo artesanal de desidratação, preservando sua beleza por muito mais tempo. É uma forma sustentável e duradoura de ter a natureza sempre perto, criando ambientes acolhedores e cheios de vida."
                 />
 
-                <section className="grid lg:grid-cols-3 gap-8 mt-12">
+                <section className="grid lg:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
                     {[1, 2].map((_, index) => (
-                        <div key={index} className="relative">
+                        <div key={index} className="relative aspect-square">
                             <Image
-                                src="/app/sectionPages/arranjos/components/Exemplo 1.jpg"
+                                src="/images/exemplo1.jpg"
                                 alt="Arranjo desidratado"
-                                width={370}
-                                height={327}
-                                className="w-full h-auto rounded-lg"
+                                fill
+                                className="rounded-lg object-cover"
                             />
                         </div>
                     ))}
@@ -100,7 +99,7 @@ export default function Arranjos() {
                                 {/* image above each step - 300x300 */}
                                 <div className="mb-4 w-[300px] h-[300px] rounded-lg overflow-hidden">
                                     <Image
-                                        src="/app/sectionPages/arranjos/components/Exemplo 1.jpg"
+                                        src="/images/exemplo1.jpg"
                                         alt={`Step ${step.number}`}
                                         width={300}
                                         height={300}
@@ -124,20 +123,20 @@ export default function Arranjos() {
                         Cuidados Especiais
                     </h2>
                     <div className="grid lg:grid-cols-3 gap-8">
-                        <div className="text-center">
+                        <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
                             <span className="text-4xl mb-4 block">☀️</span>
                             <h3 className="font-david-libre text-xl mb-2">Evite sol direto</h3>
-                            <p>Prefira locais com luz indireta para preservar as cores</p>
+                            <p className="text-gray-600">Prefira locais com luz indireta para preservar as cores</p>
                         </div>
-                        <div className="text-center">
+                        <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
                             <span className="text-4xl mb-4 block">💧</span>
                             <h3 className="font-david-libre text-xl mb-2">Mantenha seco</h3>
-                            <p>Evite ambientes úmidos como banheiros e cozinhas</p>
+                            <p className="text-gray-600">Evite ambientes úmidos como banheiros e cozinhas</p>
                         </div>
-                        <div className="text-center">
+                        <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
                             <span className="text-4xl mb-4 block">💨</span>
                             <h3 className="font-david-libre text-xl mb-2">Limpeza suave</h3>
-                            <p>Use um pano seco para remover o pó ocasionalmente</p>
+                            <p className="text-gray-600">Use um pano seco para remover o pó ocasionalmente</p>
                         </div>
                     </div>
                 </section>
