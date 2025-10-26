@@ -42,6 +42,32 @@ const dehydrationSteps = [
     }
 ];
 
+const introImages = [
+    {
+        src: "/images/exemplo1.jpg",
+        alt: "Arranjo desidratado com flores rosa"
+    },
+    {
+        src: "/images/exemplo1.jpg",
+        alt: "Arranjo desidratado com flores do campo"
+    }
+];
+
+const dehydrationImages = [
+    {
+        src: "/images/exemplo1.jpg",
+        alt: "Seleção de flores frescas"
+    },
+    {
+        src: "/images/exemplo1.jpg",
+        alt: "Processo de secagem das flores"
+    },
+    {
+        src: "/images/exemplo1.jpg",
+        alt: "Montagem do arranjo final"
+    }
+];
+
 export default function Arranjos() {
     const navLinks = [
         { label: 'HOME', href: '/' },
@@ -62,11 +88,11 @@ export default function Arranjos() {
                 />
 
                 <section className="grid lg:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
-                    {[1, 2].map((_, index) => (
+                    {introImages.map((image, index) => (
                         <div key={index} className="relative aspect-square">
                             <Image
-                                src="/images/exemplo1.jpg"
-                                alt="Arranjo desidratado"
+                                src={image.src}
+                                alt={image.alt}
                                 fill
                                 className="rounded-lg object-cover"
                             />
@@ -99,8 +125,8 @@ export default function Arranjos() {
                                 {/* image above each step - 300x300 */}
                                 <div className="mb-4 w-[300px] h-[300px] rounded-lg overflow-hidden">
                                     <Image
-                                        src="/images/exemplo1.jpg"
-                                        alt={`Step ${step.number}`}
+                                        src={dehydrationImages[index].src}
+                                        alt={dehydrationImages[index].alt}
                                         width={300}
                                         height={300}
                                         className="object-cover w-full h-full"
