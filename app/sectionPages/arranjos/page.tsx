@@ -81,13 +81,15 @@ export default function Arranjos() {
         <main className="min-h-screen">
             <Header navLinks={navLinks} />
 
-            <div className="container mx-auto px-4">
+            {/* make the page container full width so sections can touch the viewport edges */}
+            <div className="max-w-full mx-0 px-0">
                 <SectionTitle
                     title="O que são Arranjos Desidratados?"
                     text="Arranjos desidratados são flores naturais que passam por um processo artesanal de desidratação, preservando sua beleza por muito mais tempo. É uma forma sustentável e duradoura de ter a natureza sempre perto, criando ambientes acolhedores e cheios de vida."
                 />
 
-                <section className="grid lg:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
+                {/* intro images: full width grid so images align to the page edges */}
+                <section className="grid lg:grid-cols-2 gap-8 mt-12 max-w-3xl mx-auto px-6">
                     {introImages.map((image, index) => (
                         <div key={index} className="relative aspect-square">
                             <Image
@@ -100,69 +102,76 @@ export default function Arranjos() {
                     ))}
                 </section>
 
-                <section className="my-16 py-12 bg-[#F8E8E3] rounded-lg">
-                    <h2 className="text-3xl font-david-libre text-center mb-12">
-                        Vantagens dos Arranjos desidratados
-                    </h2>
-                    <div className="grid lg:grid-cols-3 gap-8 px-6">
-                        {benefitsData.map((benefit, index) => (
-                            <div key={index} className="text-center">
-                                <span className="text-4xl mb-4 block">{benefit.icon}</span>
-                                <h3 className="font-david-libre text-xl mb-2">{benefit.title}</h3>
-                                <p className="text-gray-600">{benefit.description}</p>
-                            </div>
-                        ))}
+                {/* Vantagens: make the section full width (background touches edges) and remove outer padding */}
+                <section className="my-16 py-12 bg-[#F8E8E3] w-full">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <h2 className="text-3xl font-david-libre text-center mb-12">
+                            Vantagens dos Arranjos desidratados
+                        </h2>
+                        <div className="grid lg:grid-cols-3 gap-8">
+                            {benefitsData.map((benefit, index) => (
+                                <div key={index} className="text-center">
+                                    <span className="text-4xl mb-4 block">{benefit.icon}</span>
+                                    <h3 className="font-david-libre text-xl mb-2">{benefit.title}</h3>
+                                    <p className="text-gray-600">{benefit.description}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
 
-                <section className="my-16 py-12 bg-[#DDB7AB] rounded-lg">
-                    <h2 className="text-3xl font-david-libre text-center mb-12">
-                        Como funciona a desidratação?
-                    </h2>
-                    <div className="grid lg:grid-cols-3 gap-8 px-6">
-                        {dehydrationSteps.map((step, index) => (
-                            <div key={index} className="text-center flex flex-col items-center">
-                                {/* image above each step - 300x300 */}
-                                <div className="mb-4 w-[300px] h-[300px] rounded-lg overflow-hidden">
-                                    <Image
-                                        src={dehydrationImages[index].src}
-                                        alt={dehydrationImages[index].alt}
-                                        width={300}
-                                        height={300}
-                                        className="object-cover w-full h-full"
-                                    />
-                                </div>
+                {/* Como funciona: full width background; inner content constrained and centered */}
+                <section className="my-16 py-12 bg-[#DDB7AB] w-full">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <h2 className="text-3xl font-david-libre text-center mb-12">
+                            Como funciona a desidratação?
+                        </h2>
+                        <div className="grid lg:grid-cols-3 gap-8">
+                            {dehydrationSteps.map((step, index) => (
+                                <div key={index} className="text-center flex flex-col items-center">
+                                    <div className="mb-4 w-[300px] h-[300px] rounded-lg overflow-hidden">
+                                        <Image
+                                            src={dehydrationImages[index].src}
+                                            alt={dehydrationImages[index].alt}
+                                            width={300}
+                                            height={300}
+                                            className="object-cover w-full h-full"
+                                        />
+                                    </div>
 
-                                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mx-auto mb-4">
-                                    <span className="font-david-libre text-xl">{step.number}</span>
+                                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mx-auto mb-4">
+                                        <span className="font-david-libre text-xl">{step.number}</span>
+                                    </div>
+                                    <h3 className="font-david-libre text-xl mb-2">{step.title}</h3>
+                                    <p className="text-white">{step.description}</p>
                                 </div>
-                                <h3 className="font-david-libre text-xl mb-2">{step.title}</h3>
-                                <p className="text-gray-700">{step.description}</p>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </section>
 
-                {/* Care Instructions Section - Added emojis consistent with Vantagens */}
-                <section className="my-16">
-                    <h2 className="text-3xl font-david-libre text-center mb-12">
-                        Cuidados Especiais
-                    </h2>
-                    <div className="grid lg:grid-cols-3 gap-8">
-                        <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
-                            <span className="text-4xl mb-4 block">☀️</span>
-                            <h3 className="font-david-libre text-xl mb-2">Evite sol direto</h3>
-                            <p className="text-gray-600">Prefira locais com luz indireta para preservar as cores</p>
-                        </div>
-                        <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
-                            <span className="text-4xl mb-4 block">💧</span>
-                            <h3 className="font-david-libre text-xl mb-2">Mantenha seco</h3>
-                            <p className="text-gray-600">Evite ambientes úmidos como banheiros e cozinhas</p>
-                        </div>
-                        <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
-                            <span className="text-4xl mb-4 block">💨</span>
-                            <h3 className="font-david-libre text-xl mb-2">Limpeza suave</h3>
-                            <p className="text-gray-600">Use um pano seco para remover o pó ocasionalmente</p>
+                {/* Care Instructions Section - keep full width layout */}
+                <section className="my-16 w-full">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <h2 className="text-3xl font-david-libre text-center mb-12">
+                            Cuidados Especiais
+                        </h2>
+                        <div className="grid lg:grid-cols-3 gap-8">
+                            <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                                <span className="text-4xl mb-4 block">☀️</span>
+                                <h3 className="font-david-libre text-xl mb-2">Evite sol direto</h3>
+                                <p className="text-gray-600">Prefira locais com luz indireta para preservar as cores</p>
+                            </div>
+                            <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                                <span className="text-4xl mb-4 block">💧</span>
+                                <h3 className="font-david-libre text-xl mb-2">Mantenha seco</h3>
+                                <p className="text-gray-600">Evite ambientes úmidos como banheiros e cozinhas</p>
+                            </div>
+                            <div className="text-center bg-white p-8 rounded-xl shadow-md border border-gray-100">
+                                <span className="text-4xl mb-4 block">💨</span>
+                                <h3 className="font-david-libre text-xl mb-2">Limpeza suave</h3>
+                                <p className="text-gray-600">Use um pano seco para remover o pó ocasionalmente</p>
+                            </div>
                         </div>
                     </div>
                 </section>
