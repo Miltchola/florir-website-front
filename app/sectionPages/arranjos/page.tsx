@@ -103,7 +103,7 @@ export default function Arranjos() {
                 </section>
 
                 {/* Vantagens: make the section full width (background touches edges) and remove outer padding */}
-                <section className="my-16 py-12 bg-[#F8E8E3] w-full">
+                <section className="mt-16 py-12 bg-[#F8E8E3] w-full">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-3xl font-david-libre text-center mb-12">
                             Vantagens dos Arranjos desidratados
@@ -121,7 +121,7 @@ export default function Arranjos() {
                 </section>
 
                 {/* Como funciona: full width background; inner content constrained and centered */}
-                <section className="my-16 py-12 bg-[#DDB7AB] w-full">
+                <section className="mb-16 py-12 bg-[#DDB7AB] w-full">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-3xl font-david-libre text-center mb-12">
                             Como funciona a desidratação?
