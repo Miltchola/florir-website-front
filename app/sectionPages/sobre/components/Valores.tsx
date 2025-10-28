@@ -14,7 +14,7 @@ interface ValoresProps {
     texto3: string;
 }
 
-export function Valores({ img1, valor1, texto1, img2, valor2, texto2, img3, valor3, texto3 }: CardProps) {
+export function Valores({ img1, valor1, texto1, img2, valor2, texto2, img3, valor3, texto3 }: ValoresProps) {
   return (
     <section className="w-full flex justify-center py-12">
       <div className="w-full max-w-5xl px-6">
