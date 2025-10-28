@@ -9,6 +9,7 @@ import { Valores } from './components/Valores';
 
 export default function Sobre() {
     const navLinks = [
+        { label: 'HOME', href: '/' },
         { label: 'SOBRE MIM', href: '/sectionPages/sobre' },
         { label: 'PRODUTOS', href: '/sectionPages/produtos' },
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },

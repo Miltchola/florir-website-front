@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface CardProps {
+interface ValoresProps {
     img1: string
     valor1: string;
     texto1: string;

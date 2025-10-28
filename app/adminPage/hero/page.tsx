@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from 'react';
-import { Header } from '../sharedComponents/layout/Header';
+import { Header } from '../../sharedComponents/layout/Header';
 
 export default function AdminPage() {
     useEffect(() => {
@@ -11,6 +11,8 @@ export default function AdminPage() {
     }, []);
 
     const navLinks = [
+        { label: 'HERO', href: '/adminPage/hero' },
+        { label: 'PRODUTOS', href: '/adminPage/produtos' },
         { label: 'VOLTAR', href: '/' },
     ];
 
