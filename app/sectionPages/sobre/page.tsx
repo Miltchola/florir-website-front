@@ -49,12 +49,15 @@ export default function Sobre() {
             />
 
                         <Valores
-                            valor1="/icons/right.png"
-                            texto1="Sustentabilidade"
-                            valor2="/icons/right.png"
-                            texto2="Originalidade"
-                            valor3="/icons/right.png"
-                            texto3="Feito à mão"
+                            img1="/images/Anel Florido.jpeg"
+                            valor1="Sustentabilidade"
+                            texto1="Trabalho de forma consciente, valorizando a natureza e criando peças duradouras que reduzem o desperdício."
+                            img2="/images/Tati Bolo.jpeg"
+                            valor2="Originalidade"
+                            texto2="Cada peça é única, criada especialmente para você. Não existem dois arranjos iguais no meu ateliê."
+                            img3="/images/Tati Flores.jpeg"
+                            valor3="Feito à mão"
+                            texto3="Todo o processo é artesanal, do início ao fim. Cada detalhe recebe atenção especial e muito amor."
                         />
 
             <Line/>
