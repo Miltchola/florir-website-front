@@ -48,22 +48,22 @@ const introImages = [
         alt: "Arranjo desidratado com flores rosa"
     },
     {
-        src: "/images/exemplo1.jpg",
+        src: "/images/exemplo2.jpg",
         alt: "Arranjo desidratado com flores do campo"
     }
 ];
 
 const dehydrationImages = [
     {
-        src: "/images/exemplo1.jpg",
+        src: "/images/exemplo3.jpeg",
         alt: "Seleção de flores frescas"
     },
     {
-        src: "/images/exemplo1.jpg",
+        src: "/images/exemplo4.jpeg",
         alt: "Processo de secagem das flores"
     },
     {
-        src: "/images/exemplo1.jpg",
+        src: "/images/exemplo5.jpeg",
         alt: "Montagem do arranjo final"
     }
 ];
@@ -216,8 +216,8 @@ export default function Arranjos() {
                     nisi ut aliquip ex ea commodo consequat.`,
                 },
             ]}
-            quantidade={3} // ou null para mostrar todas
-            mostrarBotaoVerTodas={true}
+            quantidade={null} // ou null para mostrar todas
+            mostrarBotaoVerTodas={false}
             />              
             </div>
             <Footer navLinks={navLinks} />            
