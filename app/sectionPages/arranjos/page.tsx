@@ -24,23 +24,30 @@ const benefitsData = [
     }
 ];
 
-const dehydrationSteps = [
-    {
-        number: 1,
-        title: "Seleção das flores",
-        description: "Escolha criteriosa das melhores flores, frescas e recém-colhidas"
-    },
-    {
-        number: 2,
-        title: "Processo de secagem",
-        description: "Desidratação artesanal e controlada"
-    },
-    {
-        number: 3,
-        title: "Montagem do arranjo",
-        description: "Arte customizada composta com cores, texturas e formas harmoniosas"
-    }
-];
+const dehydrationSection = {
+    title: "Como funciona a desidratação?",
+    textColor: "#F5F5EF",
+    steps: [
+        {
+            number: 1,
+            title: "Seleção das flores",
+            description: "Escolha criteriosa das melhores flores, frescas e recém-colhidas",
+            textColor: "#F5F5EF"
+        },
+        {
+            number: 2,
+            title: "Processo de secagem",
+            description: "Desidratação artesanal e controlada",
+            textColor: "#F5F5EF"
+        },
+        {
+            number: 3,
+            title: "Montagem do arranjo",
+            description: "Arte customizada composta com cores, texturas e formas harmoniosas",
+            textColor: "#F5F5EF"
+        }
+    ]
+};
 
 const introImages = [
     {
@@ -123,11 +130,11 @@ export default function Arranjos() {
                 {/* Como funciona: full width background; inner content constrained and centered */}
                 <section className="mb-16 py-12 bg-[#DDB7AB] w-full">
                     <div className="max-w-7xl mx-auto px-6">
-                        <h2 className="text-3xl font-david-libre text-center mb-12">
-                            Como funciona a desidratação?
+                        <h2 className="text-3xl font-david-libre text-center mb-12" style={{ color: dehydrationSection.textColor }}>
+                            {dehydrationSection.title}
                         </h2>
                         <div className="grid lg:grid-cols-3 gap-8">
-                            {dehydrationSteps.map((step, index) => (
+                            {dehydrationSection.steps.map((step, index) => (
                                 <div key={index} className="text-center flex flex-col items-center">
                                     <div className="mb-4 w-[300px] h-[300px] rounded-lg overflow-hidden">
                                         <Image
@@ -142,8 +149,8 @@ export default function Arranjos() {
                                     <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mx-auto mb-4">
                                         <span className="font-david-libre text-xl">{step.number}</span>
                                     </div>
-                                    <h3 className="font-david-libre text-xl mb-2">{step.title}</h3>
-                                    <p className="text-white">{step.description}</p>
+                                    <h3 className="font-david-libre text-xl mb-2" style={{ color: step.textColor }}>{step.title}</h3>
+                                    <p style={{ color: step.textColor }}>{step.description}</p>
                                 </div>
                             ))}
                         </div>
