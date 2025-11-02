@@ -5,6 +5,7 @@ import { Header } from '@/app/sharedComponents/layout/Header';
 import { SectionTitle } from '@/app/sharedComponents/ui/SectionTitle';
 import { Footer } from "@/app/sharedComponents/layout/Footer";
 import { QuestionHandler } from "@/app/sharedComponents/question/QuestionHandler";
+import { useEffect, useState } from 'react';
 
 const benefitsData = [
     {
@@ -83,6 +84,48 @@ export default function Arranjos() {
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
         { label: 'CONTATO', href: '/sectionPages/contato' },
     ];
+    const [perguntas, setPerguntas] = useState<PerguntaData[]>([]);
+    const [loadingPerguntas, setLoadingPerguntas] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://florir-website-back.vercel.app';
+  
+    interface PerguntaData {
+        _id: string;
+        pergunta: string;
+        resposta: string;
+    }
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const fetchPerguntas = async () => {
+            try {
+                setLoadingPerguntas(true);
+                const response = await fetch(`${API_BASE_URL}/perguntas`, { signal: controller.signal });
+            
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar perguntas frequentes');
+                }
+
+                const result = await response.json();
+            
+                if (Array.isArray(result.data) && result.data.length > 0) {
+                    setPerguntas(result.data);
+                } else {
+                    setPerguntas([]);
+                }
+            } catch (err) {
+                if ((err as any).name === 'AbortError') return;
+                console.error('Erro ao carregar perguntas:', err);
+                setError(err instanceof Error ? err.message : 'Erro desconhecido');
+            } finally {
+                setLoadingPerguntas(false);
+            }
+        };
+
+        fetchPerguntas();
+        return () => controller.abort();
+    }, []);
 
     return (
         <main className="min-h-screen">
@@ -183,49 +226,25 @@ export default function Arranjos() {
                     </div>
                 </section>
 
-            <QuestionHandler
-            perguntas={[
-                {
-                pergunta: "Como funciona o delivery?",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-                {
-                pergunta: "Como cuidar das flores?",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-                {
-                pergunta: "Como que é o procedimento de desidratar uma planta?",
-                resposta: `Fundadora da Florir, apaixonada por flores e design floral.
-                    Com anos de experiência no mercado, Tatiana combina criatividade
-                    e técnica para criar arranjos únicos que encantam seus clientes.
-
-                    Sua visão é transformar espaços através da beleza das flores,
-                    trazendo alegria e elegância para cada ocasião.`
-                },
-                {
-                pergunta: "Como posso entrar em contato com a Criadora?",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-                {
-                pergunta: "Faz pedidos personalizados",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-            ]}
-            quantidade={null} // ou null para mostrar todas
-            mostrarBotaoVerTodas={false}
-            />              
+            {loadingPerguntas ? (
+                <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5E635D] mx-auto mb-4"></div>
+                    <p className="text-[#5E635D]">Carregando perguntas frequentes...</p>
+                </div>
+            ) : error ? (
+                <div className="text-center py-8">
+                    <p className="text-red-600">{error}</p>
+                </div>
+            ) : (
+                <QuestionHandler
+                    perguntas={perguntas.map(p => ({
+                        pergunta: p.pergunta,
+                        resposta: p.resposta
+                    }))}
+                    quantidade={null}
+                    mostrarBotaoVerTodas={false}
+                />
+            )}              
             </div>
             <Footer navLinks={navLinks} />            
         </main>
