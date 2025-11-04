@@ -97,43 +97,73 @@ export default function Arranjos() {
 
     useEffect(() => {
         const controller = new AbortController();
+        console.log('🚀 Iniciando fetch das perguntas...');
+        console.log('📍 URL da API:', API_BASE_URL);
 
         const fetchPerguntas = async () => {
             try {
                 setLoadingPerguntas(true);
-                const response = await fetch(`${API_BASE_URL}/perguntas`, {
-                    signal: controller.signal,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                });
-            
-                if (!response.ok) {
-                    const errorData = await response.text();
-                    {/* Detalhes: ${errorData}*/}
-                    throw new Error(`Erro ao buscar perguntas frequentes. Status: ${response.status}.`);
-                }
-
-                const result = await response.json();
+                console.log('📡 Fazendo requisição para:', `${API_BASE_URL}/perguntas`);
                 
-                console.log('Response completa:', result);
-                console.log('Perguntas carregadas:', result.data);
+                console.log('⏳ Iniciando fetch...');
 
-                if (Array.isArray(result.data) && result.data.length > 0) {
-                    setPerguntas(result.data);
-                } else {
-                    console.log('Nenhuma pergunta encontrada');
-                    setPerguntas([]);
+                const timeoutId = setTimeout(() => {
+                    controller.abort();
+                    console.log('⚠️ Timeout - requisição abortada após 15 segundos');
+                }, 15000);
+                try {
+                    const response = await fetch(`${API_BASE_URL}/perguntas`, {
+                        signal: controller.signal,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    clearTimeout(timeoutId);
+                    console.log('📥 Resposta recebida do servidor:', response.status);
+            
+                    if (!response.ok) {
+                        console.log('⚠️ Resposta não ok:', response.status, response.statusText);
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    console.log('🔄 Convertendo resposta para JSON...');
+                    const result = await response.json();
+                    console.log('📦 Dados recebidos:', result);
+                
+                    if (Array.isArray(result.data)) {
+                        console.log('📝 Normalizando dados...', result.data.length, 'items');
+                        const normalized = result.data.map((item: any) => ({
+                            _id: item._id,
+                            pergunta: item.pergunta ?? item.question ?? '',
+                            resposta: item.resposta ?? item.answer ?? ''
+                        }));
+                        console.log('✨ Dados normalizados:', normalized);
+                        setPerguntas(normalized);
+                    } else {
+                        console.log('⚠️ result.data não é um array:', result);
+                    }
+                } catch (fetchError: unknown) {
+                    const fe = fetchError as { name?: string; type?: string; message?: string } | Error;
+                    console.log('🔍 Erro específico do fetch:', {
+                        isCanceled: fe && (fe as any).name === 'AbortError',
+                        type: (fe as any).type ?? 'unknown',
+                        message: fe && (fe as any).message ? (fe as any).message : String(fetchError)
+                    });
+                    throw fetchError;
                 }
-            } catch (err) {
-                if ((err as any).name === 'AbortError') return;
-                console.error('Erro detalhado ao carregar perguntas:', {
-                    message: err instanceof Error ? err.message : 'Erro desconhecido',
-                    error: err
+            } catch (err: Error | unknown) {
+                const error = err as Error;
+                console.log('❌ Erro detalhado:', {
+                    type: typeof err,
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack,
+                    fullError: err
                 });
-                setError(err instanceof Error ? err.message : 'Erro desconhecido');
+                setError(error.message);
             } finally {
+                console.log('🏁 Operação finalizada');
                 setLoadingPerguntas(false);
             }
         };
