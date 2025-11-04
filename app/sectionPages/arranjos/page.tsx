@@ -75,8 +75,18 @@ const dehydrationImages = [
         alt: "Montagem do arranjo final"
     }
 ];
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://florir-website-back.vercel.app';
+interface PerguntaData {
+    _id: string;
+    pergunta: string;
+    resposta: string;
+}
 
 export default function Arranjos() {
+    const [perguntas, setPerguntas] = useState<PerguntaData[]>([]);
+    const [loadingPerguntas, setLoadingPerguntas] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const navLinks = [
         { label: 'HOME', href: '/' },
         { label: 'SOBRE MIM', href: '/sectionPages/sobre' },
@@ -84,16 +94,6 @@ export default function Arranjos() {
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
         { label: 'CONTATO', href: '/sectionPages/contato' },
     ];
-    const [perguntas, setPerguntas] = useState<PerguntaData[]>([]);
-    const [loadingPerguntas, setLoadingPerguntas] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://florir-website-back.vercel.app';
-  
-    interface PerguntaData {
-        _id: string;
-        pergunta: string;
-        resposta: string;
-    }
 
     useEffect(() => {
         const controller = new AbortController();
@@ -101,22 +101,37 @@ export default function Arranjos() {
         const fetchPerguntas = async () => {
             try {
                 setLoadingPerguntas(true);
-                const response = await fetch(`${API_BASE_URL}/perguntas`, { signal: controller.signal });
+                const response = await fetch(`${API_BASE_URL}/perguntas`, {
+                    signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
             
                 if (!response.ok) {
-                    throw new Error('Erro ao buscar perguntas frequentes');
+                    const errorData = await response.text();
+                    {/* Detalhes: ${errorData}*/}
+                    throw new Error(`Erro ao buscar perguntas frequentes. Status: ${response.status}.`);
                 }
 
                 const result = await response.json();
-            
+                
+                console.log('Response completa:', result);
+                console.log('Perguntas carregadas:', result.data);
+
                 if (Array.isArray(result.data) && result.data.length > 0) {
                     setPerguntas(result.data);
                 } else {
+                    console.log('Nenhuma pergunta encontrada');
                     setPerguntas([]);
                 }
             } catch (err) {
                 if ((err as any).name === 'AbortError') return;
-                console.error('Erro ao carregar perguntas:', err);
+                console.error('Erro detalhado ao carregar perguntas:', {
+                    message: err instanceof Error ? err.message : 'Erro desconhecido',
+                    error: err
+                });
                 setError(err instanceof Error ? err.message : 'Erro desconhecido');
             } finally {
                 setLoadingPerguntas(false);
