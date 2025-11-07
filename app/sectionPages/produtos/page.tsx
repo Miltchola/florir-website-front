@@ -2,7 +2,7 @@
 import { Header } from '@/app/sharedComponents/layout/Header';
 import { ProdutoGrid } from '@/app/sharedComponents/produto/ProdutoGrid';
 import { SectionTitle } from '@/app/sharedComponents/ui/SectionTitle';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RecomendadoCard from './components/RecomendadoCard';
 import { Footer } from '@/app/sharedComponents/layout/Footer';
 
@@ -24,80 +24,36 @@ export default function Produtos() {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
-            if (res.ok) {
-                // precisa ver como fazer
-                const data = await res.json();
-                return data.produtos; // Supondo que a resposta tenha um campo 'produtos'
-            } else {
-                alert("E-mail ou senha inválidos.");
-            }
+
+            if (!res.ok) throw new Error("Erro ao buscar produtos");
+
+            const data = await res.json();
+            console.log("Resposta da API:", data);
+
+            const produtosData = Array.isArray(data)
+                ? data
+                : Array.isArray(data.produtos)
+                ? data.produtos
+                : Array.isArray(data.data)
+                ? data.data
+                : [];
+
+            setProdutos(produtosData);
         } catch (error) {
             console.error("Erro ao buscar produtos:", error);
+        } finally {
+            setLoading(false);
         }
     }
 
-    const produtos=[
-                    {
-                        imagem: "/images/Anel Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 150.00,
-                        recomendado: true,
-                        disponiveis: 5,
-                        tipo: "Buquês",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Bolo Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 150.00,
-                        recomendado: true,
-                        disponiveis: 5,
-                        tipo: "Arranjos",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Buquê.jpeg",
-                        nome: "Buquê de Flores Desidratadas",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 75.00,
-                        recomendado: false,
-                        disponiveis: 5,
-                        tipo: "Potes",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Anel Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 149.90,
-                        recomendado: true,
-                        disponiveis: 5,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Bolo Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 150.90,
-                        recomendado: true,
-                        disponiveis: 2,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Buquê.jpeg",
-                        nome: "Buquê de Flores Desidratadas",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 75.50,
-                        recomendado: false,
-                        disponiveis: 5,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                ]
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchProdutos();
+    }, []);
+
+    const [produtos, setProdutos] = useState<any[]>([]);
+
     return (
         <div>
             <Header
@@ -111,18 +67,28 @@ export default function Produtos() {
                 Cada peça é única e feita com muito carinho especialmente para você."
             />
 
-            <RecomendadoCard
-                produtos={produtos}
-                adminEdit={false}
-            />
+            {loading ? (
+                <p className="text-center text-gray-500 py-10">Carregando produtos...</p>
+            ) : produtos.length === 0 ? (
+                <p className="text-center text-gray-500 py-10">
+                    Nenhum produto encontrado.
+                </p>
+            ) : (
+                <>
+                    <RecomendadoCard
+                        produtos={produtos.filter(p => p.recomendado)}
+                        adminEdit={false}
+                    />
 
-            <ProdutoGrid
-                produtos={produtos}
-                quantidade={null} // ou null para mostrar todas
-                mostrarBotaoVerTodos={false}
-                topMenu={true}
-                adminEdit={false}
-            />
+                    <ProdutoGrid
+                        produtos={produtos}
+                        quantidade={null}
+                        mostrarBotaoVerTodos={false}
+                        topMenu={true}
+                        adminEdit={false}
+                    />
+                </>
+            )}
 
             <Footer navLinks={navLinks} />
         </div>

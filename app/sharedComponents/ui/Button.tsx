@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 interface ButtonProps {
-  text: string;
+  text?: string;
   onClick?: () => void;
   buttonColor?: 'light' | 'dark' | 'black' | 'red';
   width?: string;
@@ -56,7 +56,7 @@ export function Button({ text, onClick, buttonColor = 'dark', isDelete = false, 
           className="w-6 h-6"
         />
       )}
-      {text.toLocaleUpperCase()}
+      {text ? text.toLocaleUpperCase() : "VER MAIS"}
       {children}
     </button>
   );

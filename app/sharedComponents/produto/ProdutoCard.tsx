@@ -7,6 +7,7 @@ import { div } from 'framer-motion/client';
 
 interface ProdutoProps {
     imagem: string;
+    _id: string;
     nome: string;
     descricao: string;
     preco: number;
@@ -20,6 +21,7 @@ interface ProdutoProps {
 
 export function ProdutoCard({
     imagem,
+    _id,
     nome,
     descricao,
     preco,
@@ -108,6 +110,7 @@ export function ProdutoCard({
 
             {editModalOpen && (
                 <ProdutoModalEdit
+                    _id={_id} // <-- passando o id aqui
                     open={editModalOpen}
                     onClose={() => setEditModalOpen(false)}
                     imagem={imagem}

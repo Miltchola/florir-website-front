@@ -6,6 +6,7 @@ import { div } from 'framer-motion/client';
 import { TextField } from '@/app/login/components/TextField';
 
 interface ProdutoModalProps {
+    _id: string;
     open: boolean;
     onClose: () => void;
     imagem: string;
@@ -25,6 +26,7 @@ export function ProdutoModalEdit({
     open,
     onClose,
     imagem,
+    _id,
     nome,
     descricao,
     preco,
@@ -46,7 +48,54 @@ export function ProdutoModalEdit({
         };
     }, [open]);
 
-    const [titulo, setTitulo] = useState("");
+    const [titulo, setTitulo] = useState(nome);
+    const [isRecomendado, setIsRecomendado] = useState(recomendado);
+    const [isPreco, setPreco] = useState(preco.toString());
+    const [descricaoLocal, setDescricaoLocal] = useState(descricao);
+    const [isDisponiveis, setDisponiveis] = useState(disponiveis ?? 0);
+
+    useEffect(() => {
+        setIsRecomendado(recomendado);
+    }, [recomendado]);
+
+    const handleUpdate = async () => {
+        const token = localStorage.getItem("authToken");
+        const bearerToken = token?.startsWith("Bearer ") ? token : `Bearer ${token}`;
+        console.log("Token de autenticação:", token);
+        console.log("ID do produto:", _id);
+
+        if (!token) {
+            alert("Você precisa estar logado.");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/produtos/${_id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`, // O token já vem com "Bearer" do backend
+                },
+                body: JSON.stringify({
+                    imagem,
+                    nome: titulo,
+                    descricao: descricaoLocal,
+                    preco: parseFloat(isPreco),
+                    recomendado: isRecomendado,
+                    tipo,
+                    disponiveis: Number(isDisponiveis),
+                }),
+            });
+
+            if (!res.ok) throw new Error("Erro ao atualizar produto");
+            alert("Produto atualizado com sucesso!");
+            onClose(); // fecha o modal
+            // Se quiser, pode disparar um refresh na lista de produtos aqui
+        } catch (error) {
+            alert("Erro ao atualizar produto");
+            console.error(error);
+        }
+    };
 
     return (
         <AnimatePresence>
@@ -88,24 +137,41 @@ export function ProdutoModalEdit({
                             </div>
                         </div>
                         <div className="flex flex-col flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-lg font-semibold">Produto do Mês?</span>
-                                <div className="flex gap-2">
-                                    {/* FAZER NOVOS BOTÕES!! */}
-                                    <Button text="Sim" buttonColor={recomendado ? 'black' : 'dark'} width="10px" />
-                                    <Button text="Não" buttonColor={!recomendado ? 'black' : 'dark'} width="10px" />
-                                </div>
+                            {/* Campo: Produto do Mês */}
+                            <div className="flex items-center gap-3 mb-4">
+                                <label htmlFor="produtoMes" className="text-font-primary text-xl font-semibold ml-2">
+                                    Produto do Mês?
+                                </label>
+                                <input
+                                    id="produtoMes"
+                                    type="checkbox"
+                                    checked={isRecomendado}
+                                    onChange={() => setIsRecomendado(prev => !prev)}
+                                    className="w-5 h-5 cursor-pointer accent-[#1E1E1E] rounded-md focus:ring-2 focus:ring-font-primary"
+                                />
+                                <span className="text-font-primary text-base select-none">
+                                    {isRecomendado ? "Sim" : "Não"}
+                                </span>
                             </div>
+
+
                             <TextField
                                 title="Título do Produto"
-                                value={nome}
+                                value={titulo}
                                 onChange={e => setTitulo(e.target.value)}
+                                color='white'
+                                placeholder="Escolha o Título do Produto"
                             />
                             <div className="mb-4">
                                 <span className="text-base text-font-primary font-normal mb-2 ml-2 block">Tipo de Produto</span>
                                 <select className="w-full rounded-2xl px-6 py-4 text-lg text-font-primary bg-[#fff] border-none outline-none focus:ring-2 focus:ring-font-primary transition">
-                                    <option>Escolha uma das opções</option>
-                                    {/* Adicione opções reais aqui */}
+                                    <option>Acessórios</option>
+                                    <option>Arranjos</option>
+                                    <option>Buquês</option>
+                                    <option>Casamento</option>
+                                    <option>Cúpulas</option>
+                                    <option>Quadros</option>
+                                    <option>Outros</option>
                                 </select>
                             </div>
                             <div className="mb-4">
@@ -113,23 +179,51 @@ export function ProdutoModalEdit({
                                 <textarea
                                     className="w-full rounded-2xl px-6 py-4 text-lg text-font-primary bg-[#fff] border-none outline-none focus:ring-2 focus:ring-font-primary transition resize-none"
                                     rows={3}
-                                    value={descricao}
+                                    value={descricaoLocal}
+                                    onChange={(e) => setDescricaoLocal(e.target.value)}
+                                    placeholder="Escreva uma Descrição do Produto"
                                 />
                             </div>
                             <div className="flex gap-4 mb-4">
-                                <TextField title="Preço" value={`R$ ${preco.toFixed(2).replace('.', ',')}`} />
+                                <TextField
+                                    title="Preço"
+                                    value={isPreco}
+                                    type="text"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(',', '.'); // permite digitar vírgula
+                                        if (/^\d*\.?\d{0,2}$/.test(value)) { // só números e até 2 casas decimais
+                                        setPreco(value);
+                                        }
+                                    }}
+                                    color='white'
+                                    placeholder="0.00"
+                                />
                                 <div className="flex-1">
+                                    <TextField
+                                        title="Disponíveis"
+                                        value={isDisponiveis.toString()}
+                                        type="text"
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (value === "" || /^\d+$/.test(value)) {
+                                                setDisponiveis(value === "" ? 0 : Number(value));
+                                            }
+                                        }}
+                                        color="white"
+                                        placeholder="0"
+                                    />
+                                    {/*
                                     <span className="text-base text-font-primary font-normal mb-2 ml-2 block">Disponíveis</span>
                                     <select className="w-full rounded-2xl px-6 py-4 text-lg text-font-primary bg-[#fff] border-none outline-none focus:ring-2 focus:ring-font-primary transition">
                                         <option>{disponiveis ?? 0}</option>
-                                    </select>
+                                    </select>*/}
                                 </div>
                             </div>
                             <div className="flex gap-4 mb-2">
                                 <Button text="REMOVER PRODUTO" buttonColor="red" isDelete={true} width="100%" />
                             </div>
                             <div className="flex gap-4">
-                                <Button text="ATUALIZAR" buttonColor="dark" width="50%" />
+                                <Button text="ATUALIZAR" buttonColor="dark" width="50%" onClick={handleUpdate} />
                                 <Button text="CANCELAR" buttonColor="black" width="50%" onClick={onClose} />
                             </div>
                         </div>

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Button } from '@/app/sharedComponents/ui/Button';
 import { ProdutoModal } from '@/app/sharedComponents/produto/ProdutoModal';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ProdutoModalEdit } from '@/app/adminPage/produtos/components/ProdutoModalEdit';
 
 interface Produto {
     imagem: string;
@@ -12,6 +13,7 @@ interface Produto {
     recomendado: boolean;
     disponiveis: number;
     tipo: string;
+    adminEdit?: boolean;
 }
 
 interface RecomendadoProdutoProps {
@@ -19,10 +21,12 @@ interface RecomendadoProdutoProps {
     adminEdit?: boolean;
 }
 
-export default function RecomendadoProduto({ produtos }: RecomendadoProdutoProps) {
+export default function RecomendadoProduto({ produtos, adminEdit = false }: RecomendadoProdutoProps) {
     const recomendados = produtos.filter(p => p.recomendado);
     const [index, setIndex] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+
     const [direction, setDirection] = useState(0);
 
     if (recomendados.length === 0) {
@@ -71,12 +75,35 @@ export default function RecomendadoProduto({ produtos }: RecomendadoProdutoProps
                             <p className="text-base text-font-primary mb-4">{produto.descricao}</p>
                             <p className="text-xl font-bold mb-1">R$ {produto.preco.toFixed(2).replace('.', ',')}</p>
                             <p className="text-sm text-gray-500 mb-4">Disponíveis: {produto.disponiveis}</p>
-                            <Button
-                                text="QUERO PRA MIM"
-                                buttonColor="dark"
-                                width="100%"
-                                onClick={() => setModalOpen(true)}
-                            />
+                            
+                            {!adminEdit && (
+                                <Button
+                                    text="QUERO PRA MIM"
+                                    buttonColor="dark"
+                                    width="100%"
+                                    onClick={() => setModalOpen(true)}
+                                />
+                            )}
+                            {adminEdit && (
+                                <div className="flex">
+                                    <Button
+                                        text="EDITAR"
+                                        buttonColor="dark"
+                                        width="80%"
+                                        onClick={() => setEditModalOpen(true)}
+                                    />
+                                    <div className="flex ml-4 justify-center items-center
+                                    cursor-pointer hover:scale-120 transition ease-in-out duration-300">
+                                        <Image
+                                            src="/icons/delete.png"
+                                            alt="Editar"
+                                            width={32}
+                                            height={32}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                            
                         </div>
                     </motion.div>
                 </AnimatePresence>
@@ -130,20 +157,36 @@ export default function RecomendadoProduto({ produtos }: RecomendadoProdutoProps
                 </div>
             </div>
 
-            {/* Modal do Produto */}
-            <ProdutoModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)}
-                imagem={produto.imagem}
-                nome={produto.nome}
-                descricao={produto.descricao}
-                preco={produto.preco}
-                recomendado={produto.recomendado}
-                tipo={produto.tipo}
-                disponiveis={produto.disponiveis}
-                buttonText="QUERO PRA MIM"
-                buttonLink={() => setModalOpen(false)}
-            />
+            {modalOpen && (
+                <ProdutoModal
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    imagem={produto.imagem}
+                    nome={produto.nome}
+                    descricao={produto.descricao}
+                    preco={produto.preco}
+                    recomendado={produto.recomendado}
+                    tipo={produto.tipo}
+                    disponiveis={produto.disponiveis}
+                    buttonText="QUERO PRA MIM"
+                />
+            )}
+
+            {editModalOpen && (
+                <ProdutoModalEdit
+                    open={editModalOpen}
+                    onClose={() => setEditModalOpen(false)}
+                    imagem={produto.imagem}
+                    nome={produto.nome}
+                    descricao={produto.descricao}
+                    preco={produto.preco}
+                    recomendado={produto.recomendado}
+                    tipo={produto.tipo}
+                    disponiveis={produto.disponiveis}
+                    adminEdit={adminEdit}
+                    buttonText="ATUALIZAR"
+                />
+            )}
         </div>
     );
 }
