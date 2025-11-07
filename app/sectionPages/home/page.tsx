@@ -10,6 +10,7 @@ import { Footer } from "@/app/sharedComponents/layout/Footer";
 import { HeroSection } from "./components/HeroSection";
 import { Carousel } from "./components/Carousel";
 import { QuestionHandler } from "@/app/sharedComponents/question/QuestionHandler";
+import { useEffect, useState } from "react";
 
 export default function Home() {
     const navLinks = [
@@ -19,6 +20,45 @@ export default function Home() {
         { label: 'ARRANJOS DESIDRATADOS', href: '/sectionPages/arranjos' },
         { label: 'CONTATO', href: '/sectionPages/contato' },
     ];
+
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+    async function fetchProdutos() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/produtos`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (!res.ok) throw new Error("Erro ao buscar produtos");
+
+            const data = await res.json();
+            console.log("Resposta da API:", data);
+
+            const produtosData = Array.isArray(data)
+                ? data
+                : Array.isArray(data.produtos)
+                ? data.produtos
+                : Array.isArray(data.data)
+                ? data.data
+                : [];
+
+            setProdutos(produtosData);
+        } catch (error) {
+            console.error("Erro ao buscar produtos:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchProdutos();
+    }, []);
+
+    const [produtos, setProdutos] = useState<any[]>([]);
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background-primary">
             
@@ -73,72 +113,24 @@ export default function Home() {
                 buttonLink={() => window.location.href = '/sectionPages/sobre'}
             />
 
-            <ProdutoGrid
-                produtos={[
-                    {
-                        imagem: "/images/Anel Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 150,
-                        recomendado: true,
-                        disponiveis: 5,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Bolo Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 70.00,
-                        recomendado: true,
-                        disponiveis: 5,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Buquê.jpeg",
-                        nome: "Buquê de Flores Desidratadas",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 75.00,
-                        recomendado: false,
-                        disponiveis: 5,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Anel Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 50.00,
-                        recomendado: true,
-                        disponiveis: 5,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Bolo Florido.jpeg",
-                        nome: "Arranjo Floral Exclusivo",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 78.00,
-                        recomendado: true,
-                        disponiveis: 2,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                    {
-                        imagem: "/images/Buquê.jpeg",
-                        nome: "Buquê de Flores Desidratadas",
-                        descricao: "Um arranjo floral desidratado, perfeito para decorar sua casa ou presentear alguém especial.",
-                        preco: 75.00,
-                        recomendado: false,
-                        disponiveis: 5,
-                        tipo: "Decoração",
-                        buttonText: "Ver mais",
-                    },
-                ]}
-                quantidade={3} // ou null para mostrar todas
-                mostrarBotaoVerTodos={true}
-            />
+            {loading ? (
+                <p className="text-center text-gray-500 py-10">Carregando produtos...</p>
+            ) : produtos.length === 0 ? (
+                <p className="text-center text-gray-500 py-10">
+                    Nenhum produto encontrado.
+                </p>
+            ) : (
+                <>
+
+                    <ProdutoGrid
+                        produtos={produtos}
+                        quantidade={null}
+                        mostrarBotaoVerTodos={false}
+                        topMenu={true}
+                        adminEdit={false}
+                    />
+                </>
+            )}
             
             <Line/>
 
