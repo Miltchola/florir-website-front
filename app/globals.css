@@ -118,3 +118,12 @@ p {
   background: #fff !important;
   opacity: 1;
 }
+
+/* Esconder barra de scrollbar, mas permitir scroll (WebKit + Firefox + IE) */
+.modal-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.modal-scrollbar::-webkit-scrollbar {
+  display: none; /* WebKit */
+}

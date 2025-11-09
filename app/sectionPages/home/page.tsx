@@ -126,7 +126,7 @@ export default function Home() {
                         produtos={produtos}
                         quantidade={null}
                         mostrarBotaoVerTodos={false}
-                        topMenu={true}
+                        topMenu={false}
                         adminEdit={false}
                     />
                 </>

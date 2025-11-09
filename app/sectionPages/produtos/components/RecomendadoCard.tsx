@@ -7,6 +7,7 @@ import { ProdutoModalEdit } from '@/app/adminPage/produtos/components/ProdutoMod
 
 interface Produto {
     imagem: string;
+    _id: string;
     nome: string;
     descricao: string;
     preco: number;
@@ -176,6 +177,7 @@ export default function RecomendadoProduto({ produtos, adminEdit = false }: Reco
                 <ProdutoModalEdit
                     open={editModalOpen}
                     onClose={() => setEditModalOpen(false)}
+                    _id={produto._id}
                     imagem={produto.imagem}
                     nome={produto.nome}
                     descricao={produto.descricao}

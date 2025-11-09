@@ -1,9 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/app/sharedComponents/ui/Button';
 import { div } from 'framer-motion/client';
 import { TextField } from '@/app/login/components/TextField';
+
 
 interface ProdutoModalProps {
     _id: string;
@@ -53,6 +54,7 @@ export function ProdutoModalEdit({
     const [isPreco, setPreco] = useState(preco.toString());
     const [descricaoLocal, setDescricaoLocal] = useState(descricao);
     const [isDisponiveis, setDisponiveis] = useState(disponiveis ?? 0);
+    const [selectedTipo, setSelectedTipo] = useState(tipo);
 
     useEffect(() => {
         setIsRecomendado(recomendado);
@@ -60,41 +62,130 @@ export function ProdutoModalEdit({
 
     const handleUpdate = async () => {
         const token = localStorage.getItem("authToken");
-        const bearerToken = token?.startsWith("Bearer ") ? token : `Bearer ${token}`;
-        console.log("Token de autenticação:", token);
-        console.log("ID do produto:", _id);
-
         if (!token) {
             alert("Você precisa estar logado.");
             return;
         }
 
         try {
+            const fileToBase64 = (file: File): Promise<string> =>
+                new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(String(reader.result));
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+
+            const uploadImage = async (file: File) => {
+                const form = new FormData();
+                form.append('image', file);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    } as any,
+                    body: form,
+                });
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error('Erro no upload da imagem: ' + text);
+                }
+                const data = await res.json();
+                return data.url ?? data.data?.url;
+            };
+
+            let imagemParaEnviar: string | null = imagem ?? null; 
+
+            // caso o usuário tenha removido a imagem explicitamente:
+            if (previewUrl === null && !selectedFile) {
+                // envie "" ou null dependendo do backend; aqui envio empty string
+                imagemParaEnviar = '';
+            }
+            // se o usuário escolheu um novo arquivo, faça upload ou converta para base64
+            if (selectedFile) {
+             // converter para base64 e enviar no PATCH (fallback universal) ---
+                try {
+                    imagemParaEnviar = await fileToBase64(selectedFile);
+                } catch (err) {
+                    console.error('Erro ao converter imagem para base64', err);
+                }
+            }
+
+            const payload = {
+                imagem: imagemParaEnviar,
+                nome: titulo,
+                descricao: descricaoLocal,
+                preco: isPreco ? parseFloat(isPreco.replace(',', '.')) : 0,
+                recomendado: isRecomendado,
+                tipo: selectedTipo,
+                disponiveis: Number(isDisponiveis ?? 0),
+            };
+
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/produtos/${_id}`, {
-                method: "PATCH",
+                method: 'PATCH',
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`, // O token já vem com "Bearer" do backend
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    imagem,
-                    nome: titulo,
-                    descricao: descricaoLocal,
-                    preco: parseFloat(isPreco),
-                    recomendado: isRecomendado,
-                    tipo,
-                    disponiveis: Number(isDisponiveis),
-                }),
+                body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error("Erro ao atualizar produto");
-            alert("Produto atualizado com sucesso!");
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`Erro ao atualizar produto (${res.status}): ${text}`);
+            }
+
+            // sucesso
+            alert('Produto atualizado com sucesso!');
+            // cleanup: liberar objectURL se houver
+            if (previewUrl && previewUrl.startsWith('blob:')) {
+                URL.revokeObjectURL(previewUrl);
+            }
             onClose(); // fecha o modal
-            // Se quiser, pode disparar um refresh na lista de produtos aqui
+            // recarrega a página para garantir lista atualizada
+            window.location.reload();
+
         } catch (error) {
-            alert("Erro ao atualizar produto");
             console.error(error);
+            alert('Erro ao atualizar produto. Veja console para detalhes.');
         }
+    };
+
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(imagem ?? null);
+
+    useEffect(() => {
+    if (!open) {
+        if (previewUrl && previewUrl.startsWith('blob:')) URL.revokeObjectURL(previewUrl);
+        setSelectedFile(null);
+        setPreviewUrl(imagem ?? null);
+    }
+    }, [open, imagem]);
+
+    const handleChooseFile = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        // validação simples
+        if (!file.type.startsWith('image/')) {
+            alert('Escolha uma imagem válida.');
+            return;
+        }
+        // libera URL anterior se necessário
+        if (previewUrl && previewUrl.startsWith('blob:')) URL.revokeObjectURL(previewUrl);
+        const url = URL.createObjectURL(file);
+        setSelectedFile(file);
+        setPreviewUrl(url);
+    };
+
+    const handleRemoveImage = () => {
+        if (previewUrl && previewUrl.startsWith('blob:')) URL.revokeObjectURL(previewUrl);
+        setSelectedFile(null);
+        setPreviewUrl(null); // ou set to placeholder "/images/placeholder.jpg"
     };
 
     return (
@@ -115,25 +206,42 @@ export function ProdutoModalEdit({
                     <motion.div
                         className="relative rounded-[32px] p-6 md:p-10
                             max-w-[900px] w-full flex flex-col md:flex-row
-                            gap-8 shadow-2xl z-10 bg-[#FCECEC] overflow-y-auto"
+                            gap-8 shadow-2xl z-10 bg-[#FCECEC] overflow-y-auto modal-scrollbar"
+                        style={{ maxHeight: 'calc(100vh - 40px)' }}
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.95, opacity: 0 }}
                         onClick={e => e.stopPropagation()}
                     >
                         <div className="flex flex-col items-center md:items-start flex-shrink-0 mb-4 md:mb-0 min-w-[220px]">
-                            <Image
-                                src={imagem}
-                                alt={nome}
-                                width={220}
-                                height={220}
-                                className="rounded-[20px] object-cover w-[220px] h-[220px] mb-4"
-                            />   
+                            <input
+                              ref={fileInputRef}
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={handleFileChange}
+                            />
+
+                            {previewUrl && (previewUrl.startsWith('blob:') || previewUrl.startsWith('data:')) ? (
+                                <img
+                                    src={previewUrl}
+                                    alt={nome}
+                                    className="rounded-[20px] object-cover w-[220px] h-[220px] mb-4"
+                                />
+                            ) : (
+                                <Image
+                                    src={previewUrl ?? '/images/placeholder.png'}
+                                    alt={nome}
+                                    width={220}
+                                    height={220}
+                                    className="rounded-[20px] object-cover w-[220px] h-[220px] mb-4"
+                                />
+                            )}
                             <div className="mt-2 w-full flex-col items-center justify-center">
                                 <div className="mb-4">
-                                    <Button text="Trocar Imagem" buttonColor="dark" width="180px" />
+                                    <Button text="Trocar Imagem" buttonColor="dark" width="100%" onClick={handleChooseFile} />
                                 </div>
-                                <Button text="Remover Imagem" buttonColor="dark" width="180px" />
+                                <Button text="Remover Imagem" buttonColor="dark" width="100%" onClick={handleRemoveImage} />
                             </div>
                         </div>
                         <div className="flex flex-col flex-1 min-w-0">
@@ -164,14 +272,18 @@ export function ProdutoModalEdit({
                             />
                             <div className="mb-4">
                                 <span className="text-base text-font-primary font-normal mb-2 ml-2 block">Tipo de Produto</span>
-                                <select className="w-full rounded-2xl px-6 py-4 text-lg text-font-primary bg-[#fff] border-none outline-none focus:ring-2 focus:ring-font-primary transition">
-                                    <option>Acessórios</option>
-                                    <option>Arranjos</option>
-                                    <option>Buquês</option>
-                                    <option>Casamento</option>
-                                    <option>Cúpulas</option>
-                                    <option>Quadros</option>
-                                    <option>Outros</option>
+                                <select
+                                    value={selectedTipo}
+                                    onChange={(e) => setSelectedTipo(e.target.value)}
+                                    className="w-full rounded-2xl px-6 py-4 text-lg text-font-primary bg-[#fff] border-none outline-none focus:ring-2 focus:ring-font-primary transition"
+                                >
+                                    <option value="Acessórios">Acessórios</option>
+                                    <option value="Arranjos">Arranjos</option>
+                                    <option value="Buquês">Buquês</option>
+                                    <option value="Casamento">Casamento</option>
+                                    <option value="Cúpulas">Cúpulas</option>
+                                    <option value="Quadros">Quadros</option>
+                                    <option value="Outros">Outros</option>
                                 </select>
                             </div>
                             <div className="mb-4">
@@ -219,10 +331,11 @@ export function ProdutoModalEdit({
                                     </select>*/}
                                 </div>
                             </div>
+
                             <div className="flex gap-4 mb-2">
                                 <Button text="REMOVER PRODUTO" buttonColor="red" isDelete={true} width="100%" />
                             </div>
-                            <div className="flex gap-4">
+                            <div className="flex gap-4 pb-12">
                                 <Button text="ATUALIZAR" buttonColor="dark" width="50%" onClick={handleUpdate} />
                                 <Button text="CANCELAR" buttonColor="black" width="50%" onClick={onClose} />
                             </div>
