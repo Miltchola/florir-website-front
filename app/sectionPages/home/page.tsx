@@ -59,6 +59,61 @@ export default function Home() {
 
     const [produtos, setProdutos] = useState<any[]>([]);
 
+    interface PerguntaData {
+        _id: string;
+        pergunta: string;
+        resposta: string;
+    }
+
+    const [perguntas, setPerguntas] = useState<PerguntaData[]>([]);
+    const [loadingPerguntas, setLoadingPerguntas] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const controller = new AbortController();
+    
+        const fetchPerguntas = async () => {
+            const timeoutId = setTimeout(() => {
+                controller.abort();
+            }, 15000);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/perguntas`, {
+                    signal: controller.signal,
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+            
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            
+                const result = await response.json();
+            
+                if (Array.isArray(result.data)) {
+                    const normalized = result.data.map((item: any) => ({
+                        _id: item._id,
+                        pergunta: item.pergunta ?? item.question ?? '',
+                        resposta: item.resposta ?? item.answer ?? ''
+                    }));
+                    setPerguntas(normalized);
+                }
+            
+                setLoadingPerguntas(false);
+            } catch (error) {
+                setError('Erro ao carregar perguntas');
+                setLoadingPerguntas(false);
+            }
+        };
+
+        fetchPerguntas();
+        return () => controller.abort();
+    }, []);
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background-primary">
             
@@ -135,47 +190,12 @@ export default function Home() {
             <Line/>
 
             <QuestionHandler
-            perguntas={[
-                {
-                pergunta: "Como funciona o delivery?",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-                {
-                pergunta: "Como cuidar das flores?",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-                {
-                pergunta: "Como que é o procedimento de desidratar uma planta?",
-                resposta: `Fundadora da Florir, apaixonada por flores e design floral.
-                    Com anos de experiência no mercado, Tatiana combina criatividade
-                    e técnica para criar arranjos únicos que encantam seus clientes.
-
-                    Sua visão é transformar espaços através da beleza das flores,
-                    trazendo alegria e elegância para cada ocasião.`
-                },
-                {
-                pergunta: "Como posso entrar em contato com a Criadora?",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-                {
-                pergunta: "Faz pedidos personalizados",
-                resposta: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi ut aliquip ex ea commodo consequat.`,
-                },
-            ]}
-            quantidade={3} // ou null para mostrar todas
-            mostrarBotaoVerTodas={true}
+                perguntas={perguntas.map(p => ({
+                            pergunta: p.pergunta,
+                            resposta: p.resposta
+                        }))}
+                quantidade={3} // ou null para mostrar todas
+                mostrarBotaoVerTodas={true}
             />
 
             <Footer navLinks={navLinks} />
