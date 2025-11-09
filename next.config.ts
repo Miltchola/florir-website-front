@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ["media.hmma.live"], // Domínio de Teste de HUGO
+  },
 };
 
 export default nextConfig;

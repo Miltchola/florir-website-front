@@ -9,7 +9,7 @@ interface ProdutoModalProps {
     imagem: string;
     nome: string;
     descricao: string;
-    preco: string;
+    preco: number;
     recomendado: boolean;
     tipo: string;
     disponiveis?: number;
@@ -28,8 +28,10 @@ export function ProdutoModal({
     preco,
     tipo,
     disponiveis,
+    recomendado,
     buttonText,
     buttonLink,
+    adminEdit = false,
 }: ProdutoModalProps) {
     useEffect(() => {
         if (open) {
@@ -41,6 +43,9 @@ export function ProdutoModal({
             document.body.style.overflow = '';
         };
     }, [open]);
+
+    const mensagemWhatsApp = `Olá, gostaria de mais informações sobre o produto que vi no seu site: ${nome}, ${descricao} - Preço: R$ ${preco}.`;
+    const whatsappLink = `https://wa.me/5571991225528?text=${encodeURIComponent(mensagemWhatsApp)}`;
 
     return (
         <AnimatePresence>
@@ -83,11 +88,22 @@ export function ProdutoModal({
                         </div>
                         <div className="flex flex-col justify-between flex-1">
                             <div>
-                                <h3 className="text-lg font-semibold mb-2">Produto do Mês</h3>
+                                {recomendado && (
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <h3 className="text-lg font-semibold">Produto do Mês</h3>
+                                        <Image
+                                            src="/icons/star-circle-dark.png"
+                                            alt="Produto Recomendado"
+                                            width={28}
+                                            height={28}
+                                            className="translate-y-[1px]"
+                                        />
+                                    </div>
+                                )}
                                 <h2 className="text-2xl font-serif font-medium mb-1">{nome}</h2>
                                 <p className="text-base text-gray-600 mb-2">{tipo}</p>
                                 <p className="text-base text-font-primary mb-4">{descricao}</p>
-                                <p className="text-xl font-bold mb-1">R$ {preco}</p>
+                                <p className="text-xl font-bold mb-1">R$ {preco.toFixed(2).replaceAll('.', ',')}</p>
                                 {disponiveis !== undefined && (
                                     <p className="text-sm text-gray-500 mb-4">Disponíveis: {disponiveis}</p>
                                 )}
@@ -95,9 +111,10 @@ export function ProdutoModal({
                             <div className="flex flex-col md:flex-row gap-4 mt-4">
                                 <Button
                                     text="QUERO PRA MIM"
-                                    onClick={buttonLink}
+                                        onClick={() => window.open(whatsappLink, '_blank')}
                                     buttonColor="dark"
                                     width="100%"
+                                    whatsapp={true}
                                 />
                                 <Button
                                     text="FECHAR"

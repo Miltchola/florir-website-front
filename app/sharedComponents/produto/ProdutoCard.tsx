@@ -2,10 +2,12 @@ import { ReactNode, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/app/sharedComponents/ui/Button';
 import { ProdutoModal } from './ProdutoModal';
+import { ProdutoModalEdit } from '@/app/adminPage/produtos/components/ProdutoModalEdit';
 import { div } from 'framer-motion/client';
 
 interface ProdutoProps {
     imagem: string;
+    _id: string;
     nome: string;
     descricao: string;
     preco: number;
@@ -19,6 +21,7 @@ interface ProdutoProps {
 
 export function ProdutoCard({
     imagem,
+    _id,
     nome,
     descricao,
     preco,
@@ -30,12 +33,13 @@ export function ProdutoCard({
     disponiveis,
 }: ProdutoProps) {
     const [modalOpen, setModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
 
     return (
         <>
             <div className="bg-background-primary rounded-[28px] p-6 flex flex-col w-[300px]
             transition duration-500 ease-in-out hover:scale-102 hover:shadow-xl">
-                <div className="w-[250px] h-[250px] mb-4 overflow-hidden rounded-[18px]">
+                <div className="w-[250px] h-[250px] mb-4 overflow-hidden rounded-[18px] relative">
                     <Image
                         src={imagem}
                         alt={nome}
@@ -44,6 +48,16 @@ export function ProdutoCard({
                         className="object-cover w-full h-full
                         transition duration-500 ease-in-out hover:scale-105"
                     />
+                    {recomendado && (
+                        <div className="absolute top-2 right-2">
+                            <Image
+                                src="/icons/star-circle.png"
+                                alt="Produto Recomendado"
+                                width={32}
+                                height={32}
+                            />
+                        </div>
+                    )}
                 </div>
                 <h2 className="font-bold leading-8 mb-2">{nome}</h2>
                 <p className="text-font-primary text-base font-thin mb-4 text-left">
@@ -62,7 +76,7 @@ export function ProdutoCard({
                         <div className='flex'>
                             <Button
                                 text="Editar"
-                                onClick={() => alert('Função de editar produto')}
+                                onClick={() => setEditModalOpen(true)}
                                 buttonColor="dark"
                             />
                             <div className="flex ml-2 justify-center items-center
@@ -78,19 +92,39 @@ export function ProdutoCard({
                     )}
                 </div>
             </div>
-            <ProdutoModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)}
-                imagem={imagem}
-                nome={nome}
-                descricao={descricao}
-                preco={preco.toFixed(2).replace('.', ',')}
-                recomendado={recomendado}
-                tipo={tipo}
-                disponiveis={disponiveis}
-                buttonText={buttonText}
-                buttonLink={buttonLink}
-            />
+            {modalOpen && (
+                <ProdutoModal
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    imagem={imagem}
+                    nome={nome}
+                    descricao={descricao}
+                    preco={preco}
+                    recomendado={recomendado}
+                    tipo={tipo}
+                    disponiveis={disponiveis}
+                    buttonText={buttonText}
+                    buttonLink={buttonLink}
+                />
+            )}
+
+            {editModalOpen && (
+                <ProdutoModalEdit
+                    _id={_id} // <-- passando o id aqui
+                    open={editModalOpen}
+                    onClose={() => setEditModalOpen(false)}
+                    imagem={imagem}
+                    nome={nome}
+                    descricao={descricao}
+                    preco={preco}
+                    recomendado={recomendado}
+                    tipo={tipo}
+                    disponiveis={disponiveis}
+                    buttonText={buttonText}
+                    buttonLink={buttonLink}
+                    adminEdit={adminEdit}
+                />
+            )}
         </>
     );
 }
