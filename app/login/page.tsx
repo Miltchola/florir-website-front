@@ -25,7 +25,11 @@ export default function LoginPage() {
             });
             if (res.ok) {
                 const data = await res.json();
-                localStorage.setItem("authToken", data.token); // Salva o token
+                console.log(data);
+                localStorage.setItem("authToken", data.data.token); // Salva o token
+                localStorage.setItem("userId", data.data.userId);
+                localStorage.setItem("username", data.data.username);
+                
                 alert("Login realizado com sucesso!");
                 window.location.href = "/adminPage/hero"; // Redireciona
             } else {

@@ -28,6 +28,7 @@ export function ProdutoModal({
     preco,
     tipo,
     disponiveis,
+    recomendado,
     buttonText,
     buttonLink,
     adminEdit = false,
@@ -87,7 +88,18 @@ export function ProdutoModal({
                         </div>
                         <div className="flex flex-col justify-between flex-1">
                             <div>
-                                <h3 className="text-lg font-semibold mb-2">Produto do Mês</h3>
+                                {recomendado && (
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <h3 className="text-lg font-semibold">Produto do Mês</h3>
+                                        <Image
+                                            src="/icons/star-circle-dark.png"
+                                            alt="Produto Recomendado"
+                                            width={28}
+                                            height={28}
+                                            className="translate-y-[1px]"
+                                        />
+                                    </div>
+                                )}
                                 <h2 className="text-2xl font-serif font-medium mb-1">{nome}</h2>
                                 <p className="text-base text-gray-600 mb-2">{tipo}</p>
                                 <p className="text-base text-font-primary mb-4">{descricao}</p>

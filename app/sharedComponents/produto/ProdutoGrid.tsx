@@ -7,6 +7,7 @@ import { SectionDivision } from '../ui/SectionDivision';
 import { Line } from '../ui/Line';
 
 interface Produto {
+	_id: string;
 	imagem: string;
 	nome: string;
 	descricao: string;
@@ -77,7 +78,7 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 						</div>
 						{/* Barra de pesquisa */}
 						<div className="flex-1 flex justify-center md:justify-end">
-							<div className="relative w-full md:w-[250px]">
+							<div className="relative w-full md:w-[350px]">
 								<span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#646862]">
 									<svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="8" cy="8" r="7"/><line x1="13" y1="13" x2="17" y2="17"/></svg>
 								</span>
@@ -121,6 +122,7 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 						viewport={{ once: true }}
 					>
 						<ProdutoCard
+							_id={p._id}
 							imagem={p.imagem}
 							nome={p.nome}
 							descricao={p.descricao}
