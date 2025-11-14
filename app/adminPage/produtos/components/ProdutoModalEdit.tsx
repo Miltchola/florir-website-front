@@ -7,20 +7,21 @@ import { TextField } from '@/app/login/components/TextField';
 
 
 interface ProdutoModalProps {
-    _id: string;
+    _id?: string;
     open: boolean;
     onClose: () => void;
-    imagem: string;
-    nome: string;
-    descricao: string;
-    preco: number;
-    recomendado: boolean;
-    tipo: string;
+    imagem?: string;
+    nome?: string;
+    descricao?: string;
+    preco?: number;
+    recomendado?: boolean;
+    tipo?: string;
     disponiveis?: number;
-    buttonText: string;
+    buttonText?: string;
     buttonLink?: (() => void);
     children?: ReactNode;
     adminEdit?: boolean;
+    isCreating?: boolean;
 }
 
 export function ProdutoModalEdit({
@@ -37,6 +38,7 @@ export function ProdutoModalEdit({
     buttonText,
     buttonLink,
     adminEdit = false,
+    isCreating = false,
 }: ProdutoModalProps) {
     useEffect(() => {
         if (open) {
@@ -49,15 +51,20 @@ export function ProdutoModalEdit({
         };
     }, [open]);
 
-    const [titulo, setTitulo] = useState(nome);
-    const [isRecomendado, setIsRecomendado] = useState(recomendado);
-    const [isPreco, setPreco] = useState(preco.toString());
-    const [descricaoLocal, setDescricaoLocal] = useState(descricao);
+    const [titulo, setTitulo] = useState(isCreating ? "" : (nome ?? ""));
+    const [isRecomendado, setIsRecomendado] = useState(recomendado ?? false);
+    const [isPreco, setPreco] = useState(isCreating ? "" : (preco?.toString() ?? "0"));
+    const [descricaoLocal, setDescricaoLocal] = useState(isCreating ? "" : (descricao ?? ""));
     const [isDisponiveis, setDisponiveis] = useState(disponiveis ?? 0);
-    const [selectedTipo, setSelectedTipo] = useState(tipo);
+    const [selectedTipo, setSelectedTipo] = useState(isCreating ? "Arranjos" : (tipo ?? "Arranjos"));
+    
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [previewUrlState, setPreviewUrl] = useState<string | null>(imagem ?? null);
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
     useEffect(() => {
-        setIsRecomendado(recomendado);
+        setIsRecomendado(recomendado ?? false);
     }, [recomendado]);
 
     const handleUpdate = async () => {
@@ -68,100 +75,88 @@ export function ProdutoModalEdit({
         }
 
         try {
-            const fileToBase64 = (file: File): Promise<string> =>
-                new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(String(reader.result));
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-
-            const uploadImage = async (file: File) => {
-                const form = new FormData();
-                form.append('image', file);
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/upload`, {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    } as any,
-                    body: form,
-                });
-                if (!res.ok) {
-                    const text = await res.text();
-                    throw new Error('Erro no upload da imagem: ' + text);
-                }
-                const data = await res.json();
-                return data.url ?? data.data?.url;
-            };
-
-            let imagemParaEnviar: string | null = imagem ?? null; 
-
-            // caso o usuário tenha removido a imagem explicitamente:
-            if (previewUrl === null && !selectedFile) {
-                // envie "" ou null dependendo do backend; aqui envio empty string
-                imagemParaEnviar = '';
-            }
-            // se o usuário escolheu um novo arquivo, faça upload ou converta para base64
+            const formData = new FormData();
             if (selectedFile) {
-             // converter para base64 e enviar no PATCH (fallback universal) ---
-                try {
-                    imagemParaEnviar = await fileToBase64(selectedFile);
-                } catch (err) {
-                    console.error('Erro ao converter imagem para base64', err);
-                }
+                formData.append('imagem', selectedFile);
+            } else {
+                formData.append('imagem', previewUrlState ?? '/images/placeholder.png');
             }
 
-            const payload = {
-                imagem: imagemParaEnviar,
-                nome: titulo,
-                descricao: descricaoLocal,
-                preco: isPreco ? parseFloat(isPreco.replace(',', '.')) : 0,
-                recomendado: isRecomendado,
-                tipo: selectedTipo,
-                disponiveis: Number(isDisponiveis ?? 0),
-            };
+            formData.append('nome', titulo ?? '');
+            formData.append('descricao', descricaoLocal ?? '');
+            formData.append('preco', String(isPreco ? parseFloat(isPreco.replace(',', '.')) : 0));
+            formData.append('recomendado', String(isRecomendado));
+            formData.append('tipo', selectedTipo ?? 'Arranjos');
+            formData.append('disponiveis', String(Number(isDisponiveis ?? 0)));
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/produtos/${_id}`, {
-                method: 'PATCH',
+        
+            const method = isCreating ? 'POST' : 'PATCH';
+            const endpoint = isCreating 
+                ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/produtos`
+                : `${process.env.NEXT_PUBLIC_API_BASE_URL}/produtos/${_id}`;
+
+            const res = await fetch(endpoint, {
+                method,
                 headers: {
-                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(payload),
+                body: formData,
             });
 
             if (!res.ok) {
                 const text = await res.text();
-                throw new Error(`Erro ao atualizar produto (${res.status}): ${text}`);
+                throw new Error(`Erro ao ${isCreating ? 'criar' : 'atualizar'} produto (${res.status}): ${text}`);
             }
 
-            // sucesso
-            alert('Produto atualizado com sucesso!');
+            alert(`Produto ${isCreating ? 'criado' : 'atualizado'} com sucesso!`);
             // cleanup: liberar objectURL se houver
-            if (previewUrl && previewUrl.startsWith('blob:')) {
-                URL.revokeObjectURL(previewUrl);
+            if (previewUrlState && previewUrlState.startsWith('blob:')) {
+                URL.revokeObjectURL(previewUrlState);
             }
-            onClose(); // fecha o modal
-            // recarrega a página para garantir lista atualizada
+            onClose();
             window.location.reload();
 
         } catch (error) {
             console.error(error);
-            alert('Erro ao atualizar produto. Veja console para detalhes.');
+            alert(`Erro ao ${isCreating ? 'criar' : 'atualizar'} produto. Veja console para detalhes.`);
         }
     };
 
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(imagem ?? null);
+    const handleDelete = async () => {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            alert("Você precisa estar logado.");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/produtos/${_id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (!res.ok) {
+                alert("Erro ao deletar produto. Tente novamente.");
+                return;
+            }
+            alert("Produto deletado com sucesso!");
+            onClose();
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+            alert(`Erro ao deletar produto. Veja console para detalhes.`);
+        }
+        setShowConfirmDelete(false);
+    }
 
     useEffect(() => {
-    if (!open) {
-        if (previewUrl && previewUrl.startsWith('blob:')) URL.revokeObjectURL(previewUrl);
-        setSelectedFile(null);
-        setPreviewUrl(imagem ?? null);
-    }
-    }, [open, imagem]);
+        if (!open) {
+            if (previewUrlState && previewUrlState.startsWith('blob:')) URL.revokeObjectURL(previewUrlState);
+            setSelectedFile(null);
+            setPreviewUrl(isCreating ? '/images/placeholder.png' : (imagem ?? null));
+        }
+    }, [open, imagem, isCreating]);
 
     const handleChooseFile = () => {
         fileInputRef.current?.click();
@@ -170,28 +165,29 @@ export function ProdutoModalEdit({
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        // validação simples
+
         if (!file.type.startsWith('image/')) {
             alert('Escolha uma imagem válida.');
             return;
         }
-        // libera URL anterior se necessário
-        if (previewUrl && previewUrl.startsWith('blob:')) URL.revokeObjectURL(previewUrl);
+
+        if (previewUrlState && previewUrlState.startsWith('blob:')) URL.revokeObjectURL(previewUrlState);
         const url = URL.createObjectURL(file);
         setSelectedFile(file);
         setPreviewUrl(url);
     };
 
     const handleRemoveImage = () => {
-        if (previewUrl && previewUrl.startsWith('blob:')) URL.revokeObjectURL(previewUrl);
+        if (previewUrlState && previewUrlState.startsWith('blob:')) URL.revokeObjectURL(previewUrlState);
         setSelectedFile(null);
-        setPreviewUrl(null); // ou set to placeholder "/images/placeholder.jpg"
+        setPreviewUrl('/images/placeholder.png'); // assume placeholder como fallback
     };
 
     return (
         <AnimatePresence>
             {open && (
                 <motion.div
+                    key="product-modal"
                     className="fixed inset-0 z-50 flex items-center justify-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -222,26 +218,28 @@ export function ProdutoModalEdit({
                               onChange={handleFileChange}
                             />
 
-                            {previewUrl && (previewUrl.startsWith('blob:') || previewUrl.startsWith('data:')) ? (
+                            {previewUrlState && (previewUrlState.startsWith('blob:') || previewUrlState.startsWith('data:')) ? (
                                 <img
-                                    src={previewUrl}
-                                    alt={nome}
+                                    src={previewUrlState}
+                                    alt={nome ?? 'Produto'}
                                     className="rounded-[20px] object-cover w-[220px] h-[220px] mb-4"
                                 />
                             ) : (
                                 <Image
-                                    src={previewUrl ?? '/images/placeholder.png'}
-                                    alt={nome}
+                                    src={previewUrlState ?? '/images/placeholder.png'}
+                                    alt={nome ?? 'Produto'}
                                     width={220}
                                     height={220}
                                     className="rounded-[20px] object-cover w-[220px] h-[220px] mb-4"
                                 />
                             )}
                             <div className="mt-2 w-full flex-col items-center justify-center">
-                                <div className="mb-4">
-                                    <Button text="Trocar Imagem" buttonColor="dark" width="100%" onClick={handleChooseFile} />
-                                </div>
-                                <Button text="Remover Imagem" buttonColor="dark" width="100%" onClick={handleRemoveImage} />
+                                    <div className="mb-4">
+                                        <Button text={!previewUrlState ? "INSERIR IMAGEM" : "Trocar Imagem"} buttonColor="dark" width="100%" onClick={handleChooseFile} />
+                                    </div>
+                                    {previewUrlState && (
+                                        <Button text="Remover Imagem" buttonColor="dark" width="100%" onClick={handleRemoveImage} />
+                                    )}
                             </div>
                         </div>
                         <div className="flex flex-col flex-1 min-w-0">
@@ -324,21 +322,56 @@ export function ProdutoModalEdit({
                                         color="white"
                                         placeholder="0"
                                     />
-                                    {/*
-                                    <span className="text-base text-font-primary font-normal mb-2 ml-2 block">Disponíveis</span>
-                                    <select className="w-full rounded-2xl px-6 py-4 text-lg text-font-primary bg-[#fff] border-none outline-none focus:ring-2 focus:ring-font-primary transition">
-                                        <option>{disponiveis ?? 0}</option>
-                                    </select>*/}
                                 </div>
                             </div>
-
+                            {!isCreating &&(
                             <div className="flex gap-4 mb-2">
-                                <Button text="REMOVER PRODUTO" buttonColor="red" isDelete={true} width="100%" />
+                                <Button text="REMOVER PRODUTO" buttonColor="red" isDelete={true} width="100%" onClick={() => setShowConfirmDelete(true)}/>
                             </div>
+                            )}
                             <div className="flex gap-4 pb-12">
-                                <Button text="ATUALIZAR" buttonColor="dark" width="50%" onClick={handleUpdate} />
+                                <Button text={isCreating ? "CRIAR" : "ATUALIZAR"} buttonColor="dark" width="50%" onClick={handleUpdate} />
                                 <Button text="CANCELAR" buttonColor="black" width="50%" onClick={onClose} />
                             </div>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            )}
+            
+            {/* Modal de Confirmação de Exclusão */}
+            {showConfirmDelete && (
+                <motion.div
+                    key="confirm-delete-modal"
+                    className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setShowConfirmDelete(false)}
+                >
+                    <motion.div
+                        className="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full mx-4 shadow-2xl"
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.5, opacity: 0 }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h2 className="text-xl md:text-2xl font-bold text-font-primary mb-4">Confirmar Exclusão</h2>
+                        <p className="text-sm md:text-base text-font-primary mb-6 leading-relaxed">
+                            Tem certeza que deseja remover o produto <strong>"{titulo}"</strong>? <br /> Esta ação não pode ser desfeita.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <Button
+                                text="CANCELAR"
+                                buttonColor="black"
+                                width="100%"
+                                onClick={() => setShowConfirmDelete(false)}
+                            />
+                            <Button
+                                text="REMOVER"
+                                buttonColor="red"
+                                width="100%"
+                                onClick={handleDelete}
+                            />
                         </div>
                     </motion.div>
                 </motion.div>
