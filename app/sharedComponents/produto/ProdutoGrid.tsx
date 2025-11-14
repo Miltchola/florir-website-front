@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { SectionDivision } from '../ui/SectionDivision';
 import { Line } from '../ui/Line';
+import { ProdutoModalEdit } from '@/app/adminPage/produtos/components/ProdutoModalEdit';
 
 interface Produto {
 	_id: string;
@@ -44,6 +45,7 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 	const [editscreen, setEditScreen] = useState(false); // implementado em breve pra tela de edição
 	const [categoria, setCategoria] = useState("todos");
 	const [busca, setBusca] = useState("");
+	const [openCreateModal, setOpenCreateModal] = useState(false);
 
 	// Filtragem por categoria e busca
 	const produtosFiltrados = produtos.filter(p => {
@@ -101,7 +103,7 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 					<div className="w-full flex justify-center sm:justify-end">
 						<Button
 							text="Adicionar Produto"
-							onClick={() => { alert('Função de adicionar produto') }}
+							onClick={() => setOpenCreateModal(true)}
 						/>
 					</div>
 				)}
@@ -140,6 +142,15 @@ export function ProdutoGrid({ produtos, quantidade = null, mostrarBotaoVerTodos 
 			</div>
 			{mostrarBotaoVerTodos && quantidade != null && produtosFiltrados.length > quantidade && (
 				<Button text="Ver Todos" onClick={() => router.push('/sectionPages/produtos')} />
+			)}
+
+			{openCreateModal && (
+				<ProdutoModalEdit
+					open={openCreateModal}
+					onClose={() => setOpenCreateModal(false)}
+					isCreating={true}
+					adminEdit={true}
+				/>
 			)}
 		</div>
 	);

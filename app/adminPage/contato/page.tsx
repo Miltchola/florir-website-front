@@ -38,11 +38,12 @@ export default function ContatoAdminPage() {
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [resourcePath, setResourcePath] = useState<string>(CONTACT_PATH_CANDIDATES[0]);
 
-  const navLinks: NavLink[] = [
-    { label: "HERO", href: "/adminPage/hero" },
-    { label: "PRODUTOS", href: "/adminPage/produtos" },
-    { label: "CONTATO", href: "/adminPage/contato" },
-    { label: "VOLTAR", href: "/" },
+  const navLinks = [
+    { label: 'HERO', href: '/adminPage/hero' },
+    { label: 'PRODUTOS', href: '/adminPage/produtos' },
+    { label: 'PERGUNTAS', href: '/adminPage/perguntas' },
+    { label: 'CONTATO', href: '/adminPage/contato' },
+    { label: 'VOLTAR', href: '/' },
   ];
 
   const buildAuthorizationHeader = (value: string) =>
@@ -193,13 +194,12 @@ export default function ContatoAdminPage() {
   return (
     <div className="min-h-screen bg-[#FAF6F3]">
       <Header navLinks={navLinks} />
-
-      <main className="container mx-auto px-6 py-12 max-w-5xl">
-        <SectionTitle
+      <SectionTitle
           title="Gerenciar Contato"
           text="Atualize os dados exibidos na página de contato. As alterações são salvas diretamente no banco de dados."
-        />
+      />
 
+      <main className="container mx-auto px-6 py-12 max-w-5xl">
         {loading ? (
           <div className="mt-10 w-full flex justify-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#5E635D]"></div>
