@@ -191,9 +191,10 @@ export default function Home() {
 
             <QuestionHandler
                 perguntas={perguntas.map(p => ({
-                            pergunta: p.pergunta,
-                            resposta: p.resposta
-                        }))}
+                    _id:p._id,
+                    pergunta: p.pergunta,
+                    resposta: p.resposta
+                }))}
                 quantidade={3} // ou null para mostrar todas
                 mostrarBotaoVerTodas={true}
             />

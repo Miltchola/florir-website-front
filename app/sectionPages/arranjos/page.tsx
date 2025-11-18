@@ -252,6 +252,7 @@ export default function Arranjos() {
             ) : (
                 <QuestionHandler
                     perguntas={perguntas.map(p => ({
+                        _id:p._id,
                         pergunta: p.pergunta,
                         resposta: p.resposta
                     }))}

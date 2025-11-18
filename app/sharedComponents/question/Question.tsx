@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '../ui/Button';
 
 interface QuestionProps {
+    _id?: string;
     pergunta: string;
     resposta: string;
     delay?: number;
+    adminEdit?: boolean;
 }
 
-export function Question({ pergunta, resposta, delay = 0 }: QuestionProps) {
+export function Question({ _id, pergunta, resposta, delay = 0, adminEdit = false }: QuestionProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -46,6 +49,29 @@ export function Question({ pergunta, resposta, delay = 0 }: QuestionProps) {
                     </motion.div>
                 )}
             </AnimatePresence>
+            {adminEdit && (
+                <div className="flex items-center justify-center gap-6 mt-8 px-12">
+                    <Button
+                        text="EDITAR PERGUNTA"
+                        buttonColor="dark"
+                        onClick={() => alert(`Editar pergunta: ${_id}`)}
+                    />
+
+                    <button
+                        type="button"
+                        className="flex items-center justify-center p-0 cursor-pointer hover:scale-120 transition ease-in-out duration-300"
+                        onClick={() => alert(`Deletar pergunta: ${_id}`)}
+                        aria-label="Deletar pergunta"
+                    >
+                        <Image
+                            src="/icons/delete.png"
+                            alt="Deletar"
+                            width={32}
+                            height={32}
+                        />
+                    </button>
+                </div>
+            )}
         </motion.div>
     );
 }
