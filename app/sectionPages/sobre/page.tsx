@@ -6,6 +6,7 @@ import React from 'react';
 import { Card } from './components/Card';
 import { Inspiration } from './components/Inspiration';
 import { Valores } from './components/Valores';
+import { Footer } from '@/app/sharedComponents/layout/Footer';
 
 export default function Sobre() {
     const navLinks = [
@@ -49,19 +50,19 @@ export default function Sobre() {
                 imagePosition = "right"
             />
 
-                        <Valores
-                            img1="/images/Anel Florido.jpeg"
-                            valor1="Sustentabilidade"
-                            texto1="Trabalho de forma consciente, valorizando a natureza e criando peças duradouras que reduzem o desperdício."
-                            img2="/images/Tati Bolo.jpeg"
-                            valor2="Originalidade"
-                            texto2="Cada peça é única, criada especialmente para você. Não existem dois arranjos iguais no meu ateliê."
-                            img3="/images/Tati Flores.jpeg"
-                            valor3="Feito à mão"
-                            texto3="Todo o processo é artesanal, do início ao fim. Cada detalhe recebe atenção especial e muito amor."
-                        />
+            <Valores
+                img1="/images/Anel Florido.jpeg"
+                valor1="Sustentabilidade"
+                texto1="Trabalho de forma consciente, valorizando a natureza e criando peças duradouras que reduzem o desperdício."
+                img2="/images/Tati Bolo.jpeg"
+                valor2="Originalidade"
+                texto2="Cada peça é única, criada especialmente para você. Não existem dois arranjos iguais no meu ateliê."
+                img3="/images/Tati Flores.jpeg"
+                valor3="Feito à mão"
+                texto3="Todo o processo é artesanal, do início ao fim. Cada detalhe recebe atenção especial e muito amor."
+            />
 
-            <Line/>
+            <Footer navLinks={navLinks} />
         </div>
     );
 }

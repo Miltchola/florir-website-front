@@ -64,10 +64,9 @@ export default function ProdutosAdmin() {
                 navLinks={navLinks}
             />
             <SectionTitle
-                title="Catálogo Florir"
-                text="Todos os arranjos são criados com flores naturais
-                desidratadas manualmente, respeitando a sazonalidade e exclusividade. 
-                Cada peça é única e feita com muito carinho especialmente para você."
+                title="Gerenciar Produtos"
+                text="Edite seu catálgo de produtos aqui. Adicione, remova
+                    ou modifique produtos conforme necessário."
             />
 
             {loading ? (
