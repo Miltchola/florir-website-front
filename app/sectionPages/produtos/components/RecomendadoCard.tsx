@@ -29,6 +29,38 @@ export default function RecomendadoProduto({ produtos, adminEdit = false }: Reco
     const [editModalOpen, setEditModalOpen] = useState(false);
 
     const [direction, setDirection] = useState(0);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+    const handleDeleteClick = () => {
+        setShowDeleteConfirm(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            alert("Você precisa estar logado.");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/produtos/${produto._id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (!res.ok) {
+                alert("Erro ao deletar produto. Tente novamente.");
+                return;
+            }
+            alert("Produto deletado com sucesso!");
+            setShowDeleteConfirm(false);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+            alert(`Erro ao deletar produto. Veja console para detalhes.`);
+        }
+    };
 
     if (recomendados.length === 0) {
         return null;
@@ -94,7 +126,8 @@ export default function RecomendadoProduto({ produtos, adminEdit = false }: Reco
                                         onClick={() => setEditModalOpen(true)}
                                     />
                                     <div className="flex ml-4 justify-center items-center
-                                    cursor-pointer hover:scale-120 transition ease-in-out duration-300">
+                                        cursor-pointer hover:scale-120 transition ease-in-out duration-300"
+                                        onClick={handleDeleteClick}>
                                         <Image
                                             src="/icons/delete.png"
                                             alt="Editar"
@@ -188,6 +221,43 @@ export default function RecomendadoProduto({ produtos, adminEdit = false }: Reco
                     adminEdit={adminEdit}
                     buttonText="ATUALIZAR"
                 />
+            )}
+
+            {showDeleteConfirm && (
+                <motion.div
+                    className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setShowDeleteConfirm(false)}
+                >
+                    <motion.div
+                        className="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full mx-4 shadow-2xl"
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.5, opacity: 0 }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h2 className="text-xl md:text-2xl font-bold text-font-primary mb-4">Confirmar Exclusão</h2>
+                        <p className="text-sm md:text-base text-font-primary mb-6 leading-relaxed">
+                            Tem certeza que deseja remover o produto <strong>"{produto.nome}"</strong>? <br /> Esta ação não pode ser desfeita.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <Button
+                                text="CANCELAR"
+                                buttonColor="black"
+                                width="100%"
+                                onClick={() => setShowDeleteConfirm(false)}
+                            />
+                            <Button
+                                text="REMOVER"
+                                buttonColor="red"
+                                width="100%"
+                                onClick={handleConfirmDelete}
+                            />
+                        </div>
+                    </motion.div>
+                </motion.div>
             )}
         </div>
     );

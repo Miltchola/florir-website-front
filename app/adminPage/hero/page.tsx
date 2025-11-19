@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from 'react';
 import { Header } from '../../sharedComponents/layout/Header';
+import { SectionTitle } from '@/app/sharedComponents/ui/SectionTitle';
 
 export default function AdminPage() {
     useEffect(() => {
@@ -13,6 +14,8 @@ export default function AdminPage() {
     const navLinks = [
         { label: 'HERO', href: '/adminPage/hero' },
         { label: 'PRODUTOS', href: '/adminPage/produtos' },
+        { label: 'PERGUNTAS', href: '/adminPage/perguntas' },
+        { label: 'CONTATO', href: '/adminPage/contato' },
         { label: 'VOLTAR', href: '/' },
     ];
 
@@ -21,7 +24,10 @@ export default function AdminPage() {
             <Header
                 navLinks={navLinks}
             />
-            <span>TEXTO</span>
+            <SectionTitle
+                title="Hero Section"
+                text="Essa página está em desenvolvimento e será implementada em breve."
+            />
         </div>
     );
 }
