@@ -83,8 +83,8 @@ export default function AdminPage() {
                 navLinks={navLinks}
             />
             <SectionTitle
-                title="Perguntas"
-                text="Essa página está em desenvolvimento e será implementada em breve."
+                title="Gerenciar Perguntas"
+                text="Gerencie as perguntas frequentes exibidas no site aqui."
             />
 
             {loadingPerguntas ? (

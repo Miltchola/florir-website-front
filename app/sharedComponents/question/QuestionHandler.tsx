@@ -2,6 +2,7 @@ import { Question } from './Question';
 import { Button } from '@/app/sharedComponents/ui/Button';
 import { useState } from 'react';
 import { SectionDivision } from '../ui/SectionDivision';
+import { PerguntaModalEdit } from '@/app/adminPage/perguntas/components/PerguntaModalEdit';
 
 interface Pergunta {
     _id: string;
@@ -19,6 +20,7 @@ interface QuestionHandlerProps {
 
 export function QuestionHandler({ perguntas, quantidade = null, mostrarBotaoVerTodas = false, adminEdit = false }: QuestionHandlerProps) {
     const [mostrarTodas, setMostrarTodas] = useState(false);
+    const [createOpen, setCreateOpen] = useState(false);
     const perguntasExibidas = mostrarTodas || quantidade == null ? perguntas : perguntas.slice(0, quantidade);
 
     return (
@@ -31,7 +33,7 @@ export function QuestionHandler({ perguntas, quantidade = null, mostrarBotaoVerT
                     <Button
                         text="CRIAR PERGUNTA"
                         buttonColor="dark"
-                        onClick={() => alert("Função de CRIAR PERGUNTA")}
+                        onClick={() => setCreateOpen(true)}
                     />
                 </div>
             )}
@@ -48,6 +50,13 @@ export function QuestionHandler({ perguntas, quantidade = null, mostrarBotaoVerT
             ))}
             {mostrarBotaoVerTodas && !mostrarTodas && quantidade != null && perguntas.length > quantidade && (
                 <Button text="Ver Todas" onClick={() => window.location.href = "/sectionPages/arranjos"} />
+            )}
+            {createOpen && (
+                <PerguntaModalEdit
+                    open={createOpen}
+                    onClose={() => setCreateOpen(false)}
+                    isCreating={true}
+                />
             )}
         </div>
     );
